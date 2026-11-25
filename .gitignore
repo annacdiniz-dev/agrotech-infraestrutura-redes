@@ -1,0 +1,22 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+
+# Docker (dados gerados em tempo de execução)
+docker/**/leases/
+*.leases
+.env
+
+# Packet Tracer: arquivos de backup automático (o .pkt final DEVE ser versionado)
+*.pkt.bak
+*.pkz.bak
+
+# draw.io: arquivos temporários
+*.drawio.bkp
+*.drawio.dtmp
