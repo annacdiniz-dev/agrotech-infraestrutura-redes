@@ -1,0 +1,121 @@
+﻿AgroTech - evidencia gerada por docker/scripts/testar-tudo.ps1
+Data: 25/11/2026 21:31:13
+
+pc-teste:~# nslookup intranet.agrotech.local 192.168.30.11
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+Name:	intranet.agrotech.local
+Address: 192.168.30.12
+
+pc-teste:~# nslookup erp.agrotech.local
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+erp.agrotech.local	canonical name = intranet.agrotech.local.
+Name:	intranet.agrotech.local
+Address: 192.168.30.12
+
+pc-teste:~# nslookup ftp.agrotech.local
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+Name:	ftp.agrotech.local
+Address: 192.168.30.13
+
+pc-teste:~# nslookup dhcp.agrotech.local
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+Name:	dhcp.agrotech.local
+Address: 192.168.30.10
+
+pc-teste:~# nslookup fw.agrotech.local
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+Name:	fw.agrotech.local
+Address: 192.168.30.1
+
+pc-teste:~# nslookup 192.168.30.12
+12.30.168.192.in-addr.arpa	name = intranet.agrotech.local.
+
+pc-teste:~# nslookup inexistente.agrotech.local
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+** server can't find inexistente.agrotech.local: NXDOMAIN
+
+pc-teste:~# nslookup www.google.com
+Server:		192.168.30.11
+Address:	192.168.30.11#53
+
+Non-authoritative answer:
+Name:	www.google.com
+Address: 142.251.150.119
+Name:	www.google.com
+Address: 142.251.154.119
+Name:	www.google.com
+Address: 142.251.152.119
+Name:	www.google.com
+Address: 142.251.156.119
+Name:	www.google.com
+Address: 142.251.153.119
+Name:	www.google.com
+Address: 142.251.155.119
+Name:	www.google.com
+Address: 142.251.151.119
+Name:	www.google.com
+Address: 142.251.157.119
+Name:	www.google.com
+Address: 2001:4860:482d:7700::
+Name:	www.google.com
+Address: 2001:4860:482a:7700::
+Name:	www.google.com
+Address: 2001:4860:4826:7700::
+Name:	www.google.com
+Address: 2001:4860:4829:7700::
+Name:	www.google.com
+Address: 2001:4860:4827:7700::
+Name:	www.google.com
+Address: 2001:4860:482b:7700::
+Name:	www.google.com
+Address: 2001:4860:4828:7700::
+Name:	www.google.com
+Address: 2001:4860:482c:7700::
+
+pc-teste:~# dig +short intranet.agrotech.local @192.168.30.11
+192.168.30.12
+
+----- Consultas registradas pelo servidor (docker compose logs dns) -----
+agrotech-dns  | dnsmasq[1]: /etc/agrotech.hosts fw.agrotech.local is 192.168.30.1
+agrotech-dns  | dnsmasq[1]: query[AAAA] fw.agrotech.local from 192.168.30.191
+agrotech-dns  | dnsmasq[1]: config fw.agrotech.local is NODATA-IPv6
+agrotech-dns  | dnsmasq[1]: query[PTR] 12.30.168.192.in-addr.arpa from 192.168.30.191
+agrotech-dns  | dnsmasq[1]: /etc/agrotech.hosts 192.168.30.12 is intranet.agrotech.local
+agrotech-dns  | dnsmasq[1]: query[A] inexistente.agrotech.local from 192.168.30.191
+agrotech-dns  | dnsmasq[1]: config inexistente.agrotech.local is NXDOMAIN
+agrotech-dns  | dnsmasq[1]: query[A] www.google.com from 192.168.30.191
+agrotech-dns  | dnsmasq[1]: forwarded www.google.com to 8.8.8.8
+agrotech-dns  | dnsmasq[1]: forwarded www.google.com to 1.1.1.1
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.150.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.154.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.152.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.156.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.153.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.155.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.151.119
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 142.251.157.119
+agrotech-dns  | dnsmasq[1]: query[AAAA] www.google.com from 192.168.30.191
+agrotech-dns  | dnsmasq[1]: forwarded www.google.com to 1.1.1.1
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:482d:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:482a:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:4826:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:4829:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:4827:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:482b:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:4828:7700::
+agrotech-dns  | dnsmasq[1]: reply www.google.com is 2001:4860:482c:7700::
+agrotech-dns  | dnsmasq[1]: query[A] intranet.agrotech.local from 192.168.30.191
+agrotech-dns  | dnsmasq[1]: /etc/agrotech.hosts intranet.agrotech.local is 192.168.30.12
+

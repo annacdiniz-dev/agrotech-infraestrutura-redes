@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intranet AgroTech</title>
+  <style>
+    :root {
+      --verde-escuro: #1f4d2b;
+      --verde: #2e7d32;
+      --verde-claro: #e6f2e3;
+      --terra: #8b5a2b;
+      --terra-claro: #f4ebe0;
+      --areia: #faf7f2;
+      --texto: #2b2b2b;
+      --texto-suave: #5f6358;
+      --borda: #e2dccf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--texto);
+      background: var(--areia);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(120deg, var(--verde-escuro), var(--verde) 70%, var(--terra));
+      color: #fff;
+      padding: 28px 16px 64px;
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+    .topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-marca {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: #fff; position: relative; overflow: hidden;
+    }
+    .logo-marca::before {               /* sol */
+      content: ""; position: absolute; width: 18px; height: 18px; border-radius: 50%;
+      background: #e0a526; top: 7px; right: 7px;
+    }
+    .logo-marca::after {                /* campo */
+      content: ""; position: absolute; left: -6px; right: -6px; bottom: -14px; height: 34px;
+      background: repeating-linear-gradient(100deg, var(--verde) 0 6px, #43a047 6px 12px);
+      border-radius: 50% 50% 0 0;
+    }
+    .logo-texto { font-size: 1.6rem; font-weight: 700; letter-spacing: .5px; }
+    .logo-texto span { color: #f3d9a4; }
+    .logo-sub { font-size: .85rem; opacity: .85; }
+    .usuario { font-size: .9rem; background: rgba(255,255,255,.15); padding: 6px 12px; border-radius: 999px; }
+    .boasvindas { margin-top: 28px; }
+    .boasvindas h1 { margin: 0 0 6px; font-size: 1.9rem; }
+    .boasvindas p { margin: 0; opacity: .9; max-width: 640px; }
+
+    main { margin-top: -40px; padding-bottom: 40px; }
+    .cartao {
+      background: #fff; border: 1px solid var(--borda); border-radius: 14px;
+      padding: 20px; box-shadow: 0 2px 10px rgba(31,77,43,.06);
+    }
+    .grade { display: grid; gap: 16px; }
+    .grade-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    h2 { font-size: 1.15rem; margin: 0 0 14px; color: var(--verde-escuro); }
+    h2 small { font-weight: 400; color: var(--texto-suave); font-size: .85rem; }
+    section { margin-top: 20px; }
+
+    .atalho {
+      display: block; text-decoration: none; color: inherit;
+      border-left: 4px solid var(--verde); transition: transform .15s, box-shadow .15s;
+    }
+    .atalho:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(31,77,43,.12); }
+    .atalho.terra { border-left-color: var(--terra); }
+    .atalho strong { display: block; font-size: 1rem; }
+    .atalho span { color: var(--texto-suave); font-size: .9rem; }
+
+    .setores { display: flex; flex-wrap: wrap; gap: 8px; }
+    .setor {
+      padding: 6px 12px; border-radius: 999px; font-size: .88rem;
+      background: var(--verde-claro); color: var(--verde-escuro);
+    }
+    .setor.filial { background: var(--terra-claro); color: var(--terra); }
+
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--borda); }
+    th { color: var(--texto-suave); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .4px; }
+    td code { background: var(--areia); padding: 2px 6px; border-radius: 6px; font-size: .88rem; }
+    .status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--verde); }
+    .status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #43a047; box-shadow: 0 0 0 3px #c8e6c9; }
+    .tabela-rolagem { overflow-x: auto; }
+
+    .avisos li { margin-bottom: 8px; }
+    footer { text-align: center; color: var(--texto-suave); font-size: .85rem; padding: 24px 16px 32px; border-top: 1px solid var(--borda); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="topo">
+        <div class="logo">
+          <div class="logo-marca" aria-hidden="true"></div>
+          <div>
+            <div class="logo-texto">Agro<span>Tech</span></div>
+            <div class="logo-sub">Soluções Agrícolas Ltda.</div>
+          </div>
+        </div>
+        <div class="usuario">intranet.agrotech.local</div>
+      </div>
+      <div class="boasvindas">
+        <h1>Intranet corporativa</h1>
+        <p>Portal interno da matriz (Goiânia) e da filial (Anápolis): sistemas, comunicados e status dos serviços de rede.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grade grade-3">
+      <a class="cartao atalho" href="http://erp.agrotech.local">
+        <strong>Sistema ERP</strong>
+        <span>Vendas, estoque de peças e ordens de serviço</span>
+      </a>
+      <a class="cartao atalho terra" href="ftp://ftp.agrotech.local">
+        <strong>Arquivos (FTP)</strong>
+        <span>Manuais técnicos, catálogos e laudos da oficina</span>
+      </a>
+      <a class="cartao atalho" href="#servicos">
+        <strong>Suporte de TI</strong>
+        <span>Ramal 3000 · VLAN 30 · ti@agrotech.local</span>
+      </a>
+    </div>
+
+    <section class="cartao" id="servicos">
+      <h2>Status dos serviços de rede <small>· servidores da VLAN 30 (192.168.30.0/24)</small></h2>
+      <div class="tabela-rolagem">
+        <table>
+          <thead>
+            <tr><th>Serviço</th><th>Nome DNS</th><th>Endereço IP</th><th>Porta</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>DHCP</td><td><code>dhcp.agrotech.local</code></td><td><code>192.168.30.10</code></td><td>67/UDP</td><td><span class="status">Ativo</span></td></tr>
+            <tr><td>DNS</td><td><code>dns.agrotech.local</code></td><td><code>192.168.30.11</code></td><td>53/UDP</td><td><span class="status">Ativo</span></td></tr>
+            <tr><td>Web / Intranet</td><td><code>intranet.agrotech.local</code></td><td><code>192.168.30.12</code></td><td>80/TCP</td><td><span class="status">Ativo</span></td></tr>
+            <tr><td>FTP</td><td><code>ftp.agrotech.local</code></td><td><code>192.168.30.13</code></td><td>21/TCP</td><td><span class="status">Ativo</span></td></tr>
+            <tr><td>Firewall / Gateway</td><td><code>fw.agrotech.local</code></td><td><code>192.168.30.1</code></td><td>—</td><td><span class="status">Ativo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cartao">
+      <h2>Setores</h2>
+      <div class="setores">
+        <span class="setor">Recepção</span>
+        <span class="setor">Administração</span>
+        <span class="setor">Financeiro</span>
+        <span class="setor">Comercial</span>
+        <span class="setor">RH</span>
+        <span class="setor">Sala de Reuniões</span>
+        <span class="setor">TI</span>
+        <span class="setor">Oficina Técnica</span>
+        <span class="setor">Estoque</span>
+        <span class="setor filial">Filial · Atendimento</span>
+        <span class="setor filial">Filial · Escritório</span>
+        <span class="setor filial">Filial · Oficina</span>
+        <span class="setor filial">Filial · Estoque</span>
+      </div>
+    </section>
+
+    <section class="cartao">
+      <h2>Comunicados da TI</h2>
+      <ul class="avisos">
+        <li>A rede Wi-Fi de visitantes (VLAN 50) dá acesso somente à Internet. Colaboradores devem usar a rede corporativa.</li>
+        <li>Impressoras de rede estão disponíveis para Comercial, RH e Recepção (VLAN 20).</li>
+        <li>A comunicação entre matriz e filial é feita por VPN IPSec Site-to-Site no firewall pfSense.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    AgroTech Soluções Agrícolas Ltda. · Servido por nginx no container <code>agrotech-web</code> (192.168.30.12)<br>
+    Projeto acadêmico · Redes de Computadores II · PUC Goiás · 2026
+  </footer>
+</body>
+</html>

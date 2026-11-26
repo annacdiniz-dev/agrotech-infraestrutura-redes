@@ -1,0 +1,29 @@
+#!/bin/sh
+# Script chamado pelo udhcpc (cliente DHCP do BusyBox) a cada evento.
+# Aplica na interface o que o servidor DHCP da AgroTech entregou.
+# Obs.: no Docker o /etc/resolv.conf é um arquivo montado; por isso ele é
+# reescrito no lugar (">"), e não substituído com "mv" como no script padrão.
+
+case "$1" in
+    deconfig)
+        # Antes de pedir IP: remove o endereço atual da interface.
+        ip -4 addr flush dev "$interface"
+        ip link set "$interface" up
+        ;;
+    bound|renew)
+        # Recebeu (ou renovou) a concessão: aplica IP, máscara, gateway e DNS.
+        ip -4 addr flush dev "$interface"
+        ip -4 addr add "$ip/$mask" broadcast "${broadcast:-+}" dev "$interface"
+        for gw in $router; do
+            ip -4 route replace default via "$gw" dev "$interface"
+            break
+        done
+        {
+            echo "# Gerado pelo udhcpc com os dados do DHCP da AgroTech"
+            [ -n "$domain" ] && echo "search $domain"
+            for s in $dns; do echo "nameserver $s"; done
+        } > /etc/resolv.conf
+        echo "Configuracao aplicada: IP $ip/$mask | gateway $router | DNS $dns | dominio $domain | lease ${lease}s"
+        ;;
+esac
+exit 0

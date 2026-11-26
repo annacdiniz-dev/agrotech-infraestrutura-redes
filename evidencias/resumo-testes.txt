@@ -1,0 +1,5 @@
+﻿[PASSOU] DHCP (IP do pool .100-.200)
+[PASSOU] DNS (intranet -> 192.168.30.12)
+[PASSOU] Web (HTTP 200 no container e no host)
+[PASSOU] FTP (listar, baixar, enviar, negar senha errada)
+

@@ -1,0 +1,112 @@
+# =====================================================================
+#  AgroTech Soluções Agrícolas - Serviços de rede em containers
+#  Simula os servidores de infraestrutura da VLAN 30 (TI / Servidores)
+#  Uso:  docker compose up -d --build        (sobe DHCP, DNS, Web e FTP)
+#        docker compose --profile test up -d (sobe também o cliente de teste)
+# =====================================================================
+
+# Nome do projeto: prefixo dos recursos criados pelo Compose.
+name: agrotech
+
+services:
+
+  # ------------------------------------------------------------------
+  # DHCP - entrega IP, gateway e DNS automaticamente aos clientes
+  # ------------------------------------------------------------------
+  dhcp:
+    build: ./dhcp                       # constrói a imagem a partir de docker/dhcp/Dockerfile
+    image: agrotech/dhcp:1.0            # nome dado à imagem construída
+    container_name: agrotech-dhcp       # nome fixo do container (aparece no Docker Desktop)
+    hostname: dhcp                      # nome da máquina dentro do container
+    cap_add:                            # permissões extras de rede do kernel:
+      - NET_ADMIN                       #   manipular a tabela ARP para responder a clientes sem IP
+      - NET_RAW                         #   usar sockets brutos (ping de verificação antes da oferta)
+    volumes:
+      - ./dhcp/dnsmasq.conf:/etc/dnsmasq.conf:ro   # configuração versionada, somente leitura
+    networks:
+      agrotech-lan:
+        ipv4_address: 192.168.30.10     # IP fixo do servidor DHCP
+    restart: unless-stopped             # reinicia sozinho se cair (exceto se parado manualmente)
+
+  # ------------------------------------------------------------------
+  # DNS - traduz nomes *.agrotech.local e encaminha o resto à Internet
+  # ------------------------------------------------------------------
+  dns:
+    build: ./dns
+    image: agrotech/dns:1.0
+    container_name: agrotech-dns
+    hostname: dns
+    volumes:
+      - ./dns/dnsmasq.conf:/etc/dnsmasq.conf:ro     # configuração do DNS
+      - ./dns/agrotech.hosts:/etc/agrotech.hosts:ro # registros A da zona agrotech.local
+    networks:
+      agrotech-lan:
+        ipv4_address: 192.168.30.11     # IP fixo do servidor DNS
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  # Web - intranet corporativa (nginx)
+  # ------------------------------------------------------------------
+  web:
+    image: nginx:1.27-alpine            # imagem oficial do nginx, versão fixa (reprodutível)
+    container_name: agrotech-web
+    hostname: intranet
+    ports:
+      - "8080:80"                       # host:container -> abrir http://localhost:8080 no Windows
+    volumes:
+      - ./web/html:/usr/share/nginx/html:ro              # páginas da intranet
+      - ./web/nginx.conf:/etc/nginx/conf.d/default.conf:ro # configuração do site
+    networks:
+      agrotech-lan:
+        ipv4_address: 192.168.30.12     # IP fixo do servidor Web
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  # FTP - troca de arquivos (manuais, catálogos, laudos) - serviço bônus
+  # ------------------------------------------------------------------
+  ftp:
+    build: ./ftp
+    image: agrotech/ftp:1.0
+    container_name: agrotech-ftp
+    hostname: ftp
+    environment:
+      FTP_USER: agrotech                # usuário de demonstração
+      FTP_PASS: agrotech123             # senha de demonstração (ambiente de laboratório)
+    volumes:
+      - ./ftp/vsftpd.conf:/etc/vsftpd/vsftpd.conf:ro
+    networks:
+      agrotech-lan:
+        ipv4_address: 192.168.30.13     # IP fixo do servidor FTP
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------
+  # Cliente de teste - simula o PC de um funcionário (só sobe com --profile test)
+  # ------------------------------------------------------------------
+  cliente:
+    build: ./cliente
+    image: agrotech/cliente:1.0
+    container_name: agrotech-cliente
+    hostname: pc-teste
+    profiles: ["test"]                  # não sobe no "up" normal, só quando pedido
+    cap_add:
+      - NET_ADMIN                       # permite ao udhcpc trocar o IP e as rotas da interface
+    networks:
+      - agrotech-lan                    # sem IP fixo: o Docker dá um IP inicial da faixa .0/28,
+                                        # depois o cliente pede um IP ao nosso DHCP (.100-.200)
+    depends_on:
+      - dhcp
+      - dns
+      - web
+
+# ---------------------------------------------------------------------
+# Rede da simulação: equivale à VLAN 30 da matriz
+# ---------------------------------------------------------------------
+networks:
+  agrotech-lan:
+    name: agrotech-lan                  # nome fixo (sem prefixo do projeto)
+    driver: bridge                      # switch virtual do Docker, isolado da rede física
+    ipam:
+      config:
+        - subnet: 192.168.30.0/24       # mesma sub-rede da VLAN 30 do plano de IP
+          gateway: 192.168.30.1         # mesmo gateway do plano (fw.agrotech.local)
+          ip_range: 192.168.30.0/28     # o Docker só sorteia IPs de .1 a .14, longe do pool DHCP (.100-.200)

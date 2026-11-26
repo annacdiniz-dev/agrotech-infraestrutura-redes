@@ -1,0 +1,33 @@
+﻿AgroTech - evidencia gerada por docker/scripts/testar-tudo.ps1
+Data: 25/11/2026 21:31:21
+
+pc-teste:~# curl -s --list-only ftp://agrotech:agrotech123@ftp.agrotech.local/arquivos/
+LEIA-ME.txt
+pc-teste:~# curl -s ftp://agrotech:agrotech123@ftp.agrotech.local/arquivos/LEIA-ME.txt
+Servidor FTP da AgroTech (ftp.agrotech.local - 192.168.30.13)
+Pasta para manuais tecnicos, catalogos de pecas e laudos da oficina.
+pc-teste:~# echo Relatorio enviado pelo pc-teste > /tmp/relatorio.txt && curl -sS -T /tmp/relatorio.txt ftp://agrotech:agrotech123@ftp.agrotech.local/arquivos/ && echo upload-ok
+upload-ok
+pc-teste:~# curl -s --list-only ftp://agrotech:agrotech123@ftp.agrotech.local/arquivos/
+LEIA-ME.txt
+relatorio.txt
+pc-teste:~# curl -sS ftp://agrotech:senhaerrada@ftp.agrotech.local/ || echo login-recusado
+login-recusado
+
+----- Log do vsftpd -----
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP response: Client "192.168.30.191", "229 Entering Extended Passive Mode (|||21101|)"
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP command: Client "192.168.30.191", "TYPE A"
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP response: Client "192.168.30.191", "200 Switching to ASCII mode."
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP command: Client "192.168.30.191", "NLST"
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP response: Client "192.168.30.191", "150 Here comes the directory listing."
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP response: Client "192.168.30.191", "226 Directory send OK."
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP command: Client "192.168.30.191", "QUIT"
+agrotech-ftp  | Thu Nov 26 00:31:17 2026 [pid 38] [agrotech] FTP response: Client "192.168.30.191", "221 Goodbye."
+agrotech-ftp  | Thu Nov 26 00:31:18 2026 [pid 40] CONNECT: Client "192.168.30.191"
+agrotech-ftp  | Thu Nov 26 00:31:18 2026 [pid 40] FTP response: Client "192.168.30.191", "220 Bem-vindo ao FTP da AgroTech (ftp.agrotech.local)"
+agrotech-ftp  | Thu Nov 26 00:31:18 2026 [pid 40] FTP command: Client "192.168.30.191", "USER agrotech"
+agrotech-ftp  | Thu Nov 26 00:31:18 2026 [pid 40] [agrotech] FTP response: Client "192.168.30.191", "331 Please specify the password."
+agrotech-ftp  | Thu Nov 26 00:31:18 2026 [pid 40] [agrotech] FTP command: Client "192.168.30.191", "PASS <password>"
+agrotech-ftp  | Thu Nov 26 00:31:20 2026 [pid 39] [agrotech] FAIL LOGIN: Client "192.168.30.191"
+agrotech-ftp  | Thu Nov 26 00:31:21 2026 [pid 40] [agrotech] FTP response: Client "192.168.30.191", "530 Login incorrect."
+

@@ -1,0 +1,6 @@
+# Registros A da zona agrotech.local (formato: IP  nome-completo  apelido)
+192.168.30.1    fw.agrotech.local        fw
+192.168.30.10   dhcp.agrotech.local      dhcp
+192.168.30.11   dns.agrotech.local       dns
+192.168.30.12   intranet.agrotech.local  intranet
+192.168.30.13   ftp.agrotech.local       ftp
