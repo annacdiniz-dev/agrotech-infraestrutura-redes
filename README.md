@@ -43,7 +43,7 @@ Complementos: [simulação no Packet Tracer](packet-tracer/README.md) · [config
 | Quantidade estimada de funcionários e setores | [Doc 1, seção 1.3](docs/01-caracterizacao-da-empresa.md#13-funcionários-e-setores) |
 | Levantamento das necessidades de conectividade e comunicação | [Doc 1, seções 1.4 e 1.5](docs/01-caracterizacao-da-empresa.md#14-levantamento-de-necessidades-de-conectividade-e-comunicação) |
 | **2. Planejamento da infraestrutura de rede** | |
-| Elaboração do esquema físico da rede | [Doc 2, seção 2.2](docs/02-planejamento-da-infraestrutura.md#22-esquema-físico) · [`diagramas/fisico.drawio`](diagramas/fisico.drawio) / [`fisico.png`](diagramas/fisico.png) |
+| Elaboração do esquema físico da rede | [Doc 2, seção 2.2](docs/02-planejamento-da-infraestrutura.md#22-esquema-físico) · [`diagramas/fisico.drawio`](diagramas/fisico.drawio) · PNG: [matriz](diagramas/fisico-matriz.png), [filial](diagramas/fisico-filial.png), [racks](diagramas/fisico-racks.png) |
 | Elaboração do esquema lógico da rede | [Doc 2, seção 2.3](docs/02-planejamento-da-infraestrutura.md#23-esquema-lógico) · [`diagramas/logico.drawio`](diagramas/logico.drawio) / [`logico.png`](diagramas/logico.png) |
 | Identificação dos equipamentos necessários (switches, roteadores, servidores, computadores etc.) | [Doc 2, seção 2.4](docs/02-planejamento-da-infraestrutura.md#24-equipamentos-necessários) |
 | Definição da segmentação lógica (VLANs ou sub-redes) | [Doc 2, seção 2.6](docs/02-planejamento-da-infraestrutura.md#26-segmentação-lógica-vlans) |
@@ -96,6 +96,14 @@ flowchart TB
     FWF ---|"trunk 802.1Q"| SWF
     SWF --- V110 & V120 & V150
 ```
+
+## Diagramas
+
+**Esquema lógico** (VLANs, sub-redes, gateways, WAN e servidores):
+
+![Esquema lógico](diagramas/logico.png)
+
+**Esquema físico**: [matriz](diagramas/fisico-matriz.png) · [filial](diagramas/fisico-filial.png) · [racks](diagramas/fisico-racks.png) (detalhes no [Doc 2](docs/02-planejamento-da-infraestrutura.md#22-esquema-físico)).
 
 ## Plano de IP resumido
 
@@ -181,7 +189,7 @@ Discussão completa em [docs/06-dificuldades-e-decisoes-tecnicas.md](docs/06-dif
 - [ ] Topologia montada no Packet Tracer e salva em `packet-tracer/agrotech.pkt`
 - [ ] Prints do Packet Tracer em `evidencias/prints/pt-*.png`
 - [ ] Prints do Docker em `evidencias/prints/docker-*.png`
-- [ ] PNGs dos diagramas em `diagramas/`
+- [x] PNGs dos diagramas em `diagramas/`
 - [ ] Ana Júlia adicionada como colaboradora
 - [ ] Repositório **público** (conferido numa aba anônima)
 - [ ] Link público do repositório informado no AVA/Teams (entrega conforme a data de apresentação; apresentações de 02 a 04/12/2026)

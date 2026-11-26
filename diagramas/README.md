@@ -4,24 +4,35 @@
 |---|---|
 | [`fisico.drawio`](fisico.drawio) | 3 páginas: planta e cabeamento da **matriz**, planta e cabeamento da **filial**, elevação dos **racks 24U e 4U** |
 | [`logico.drawio`](logico.drawio) | VLANs, sub-redes, gateways, trunks, WAN, VPN e servidores |
-| `fisico.png`, `logico.png` | Exportações em imagem (geradas pela equipe, passo abaixo) |
+| [`fisico-matriz.png`](fisico-matriz.png) | Página *Matriz* do físico, em imagem |
+| [`fisico-filial.png`](fisico-filial.png) | Página *Filial* do físico, em imagem |
+| [`fisico-racks.png`](fisico-racks.png) | Página *Racks* do físico, em imagem |
+| [`logico.png`](logico.png) | Esquema lógico, em imagem |
 
 As versões em **Mermaid** dos mesmos diagramas aparecem direto no GitHub em [`docs/02-planejamento-da-infraestrutura.md`](../docs/02-planejamento-da-infraestrutura.md).
 
-## Abrir no draw.io
+## Pré-visualização
+
+![Esquema lógico](logico.png)
+
+![Esquema físico da matriz](fisico-matriz.png)
+
+![Esquema físico da filial](fisico-filial.png)
+
+![Elevação dos racks](fisico-racks.png)
+
+## Como abrir e editar no draw.io
 
 1. Acesse <https://app.diagrams.net>.
-2. Se perguntar onde salvar, escolha **Dispositivo** (*Device*).
-3. Menu **Arquivo → Abrir do dispositivo** (*File → Open from → Device*) e selecione `diagramas/fisico.drawio`.
-4. As páginas ficam em abas na parte de baixo da tela (*Matriz*, *Filial*, *Racks*).
+2. Menu **Ficheiro → Abrir de → Aparelho...** e selecione `diagramas/fisico.drawio` (ou `logico.drawio`). Se perguntar, escolha **Abrir na janela atual**.
+3. O físico tem 3 páginas; troque de página na lista que fica na barra inferior.
+4. Para mover um elemento, clique e arraste; as linhas de cabo se redesenham sozinhas.
 
-Os arquivos foram gerados automaticamente: confira se nenhum texto ficou sobreposto e, se precisar, arraste os elementos. As linhas de cabo são "inteligentes": ao mover uma sala ou o rack, elas se redesenham sozinhas.
+## Como exportar as imagens (PNG)
 
-## Exportar PNG
+Uma página por vez:
 
-1. Com o arquivo aberto, menu **Arquivo → Exportar como → PNG** (*File → Export as → PNG*).
-2. Marque **Todas as páginas** se quiser tudo numa imagem só, ou exporte uma página por vez. Zoom 100% e **Borda** 10 estão bons; deixe **Fundo transparente** desmarcado.
-3. Clique em **Exportar** e salve como `diagramas/fisico.png` (e, para o outro arquivo, `diagramas/logico.png`).
-4. Se salvar as páginas do físico separadas, use `fisico-matriz.png`, `fisico-filial.png` e `fisico-racks.png`.
-
-Se fizer alterações, salve também o `.drawio` (**Arquivo → Salvar como → Dispositivo**, mesmo nome) para manter o arquivo-fonte atualizado.
+1. **Ficheiro → Exportar...** → aba **PNG**.
+2. Opções: **Conteúdo** = Página atual · **Tamanho** = **2×** · **Aparência** = **Claro** · **Fundo Transparente** desmarcado.
+3. **Exportar PNG** → nome do ficheiro conforme a tabela acima (só `.png`, sem `.drawio` no meio) → **Onde** = Descarregar.
+4. Mova o arquivo da pasta Downloads para esta pasta `diagramas/`.

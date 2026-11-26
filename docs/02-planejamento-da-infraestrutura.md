@@ -27,6 +27,16 @@ O **roteamento entre VLANs** é feito no modelo **router-on-a-stick**: o firewal
 
 ## 2.2 Esquema físico
 
+### Diagramas físicos (draw.io)
+
+![Esquema físico da matriz](../diagramas/fisico-matriz.png)
+
+![Esquema físico da filial](../diagramas/fisico-filial.png)
+
+![Elevação dos racks](../diagramas/fisico-racks.png)
+
+Arquivo editável: [`diagramas/fisico.drawio`](../diagramas/fisico.drawio). Abaixo, as mesmas plantas em texto e um diagrama Mermaid do cabeamento.
+
 ### Planta baixa da matriz (Goiânia), cerca de 30 m × 18 m
 
 Os números entre colchetes indicam a quantidade de **pontos de rede (tomadas RJ45)** em cada sala. `AP` indica um access point no teto.
@@ -173,6 +183,10 @@ Seguindo a ABNT NBR 14565:
 ---
 
 ## 2.3 Esquema lógico
+
+![Esquema lógico](../diagramas/logico.png)
+
+Arquivo editável: [`diagramas/logico.drawio`](../diagramas/logico.drawio). Versão Mermaid:
 
 ```mermaid
 flowchart TB
