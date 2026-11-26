@@ -6,7 +6,7 @@
 | [`logico.drawio`](logico.drawio) | VLANs, sub-redes, gateways, trunks, WAN, VPN e servidores |
 | `fisico.png`, `logico.png` | Exportações em imagem (geradas pela equipe, passo abaixo) |
 
-As versões em **Mermaid** dos mesmos diagramas aparecem direto no GitHub em [`docs/03-planejamento-infra.md`](../docs/03-planejamento-infra.md).
+As versões em **Mermaid** dos mesmos diagramas aparecem direto no GitHub em [`docs/02-planejamento-da-infraestrutura.md`](../docs/02-planejamento-da-infraestrutura.md).
 
 ## Abrir no draw.io
 

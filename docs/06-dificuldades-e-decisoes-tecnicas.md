@@ -1,6 +1,8 @@
-# 7. Dificuldades e decisões técnicas
+# 6. Dificuldades e decisões técnicas
 
-## 7.1 Limitações e decisões técnicas do ambiente Docker
+> Atende ao item "**Explicação das soluções adotadas**" (requisito 5 — Documentação e evidências) e ao ponto da apresentação "**As principais dificuldades e decisões técnicas do projeto**".
+
+## 6.1 Limitações e decisões técnicas do ambiente Docker
 
 ### DHCP no Docker Desktop (Windows) só funciona entre containers
 
@@ -44,7 +46,7 @@ O FTP usa duas conexões (controle na porta 21 e dados numa porta extra). Entre 
 
 Arquivos de configuração montados em containers Linux não podem ter fim de linha Windows (CRLF), senão o dnsmasq e o shell leem caracteres extras. O [`.gitattributes`](../.gitattributes) força LF em todos os arquivos (e CRLF só nos scripts `.ps1`), mesmo que o repositório seja clonado no Windows. Os scripts PowerShell gravam as evidências em UTF-8 explicitamente, porque o Windows PowerShell 5.1 usaria UTF-16 por padrão.
 
-## 7.2 Decisões da infraestrutura
+## 6.2 Decisões da infraestrutura
 
 ### Router-on-a-stick em vez de switch camada 3
 
@@ -100,7 +102,7 @@ Os trunks usam a VLAN nativa 99, sem nenhum host, em vez da VLAN 1 padrão, o qu
 
 As senhas de *enable* (`AgroTech2026`) e do FTP (`agrotech123`) estão em texto nos arquivos, porque o repositório precisa permitir a reprodução da solução. **Em produção**, as senhas ficariam fora do Git (arquivo `.env` não versionado ou cofre de senhas), e o acesso administrativo seria por SSH com usuários individuais.
 
-## 7.3 Melhorias futuras
+## 6.3 Melhorias futuras
 
 - Publicar o serviço de DHCP para todas as VLANs no servidor real (macvlan + `dhcp-range` por VLAN).
 - Trocar FTP por SFTP.

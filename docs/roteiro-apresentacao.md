@@ -1,63 +1,78 @@
 # Roteiro da apresentação (8 a 10 minutos)
 
-**Apresentadoras:** Anna Clara Diniz (AC) e Ana Júlia Francelin (AJ).
+**Apresentadoras:** Anna Clara Diniz (AC) e Ana Júlia Francelin (AJ). O enunciado exige que **todos os integrantes participem e demonstrem conhecimento**; por isso as falas se alternam e cada uma apresenta uma parte de cada metade (planejamento e prática).
+
+O enunciado pede que a apresentação explique **cinco pontos**. Cada bloco abaixo cobre um deles, na mesma ordem:
+
+| Ponto exigido pelo enunciado | Bloco | Quem | Tempo |
+|---|---|---|---|
+| (abertura: empresa e necessidades) | 0 | AC | 1min |
+| A estrutura da rede proposta | 1 | AJ | 2min |
+| O plano de endereçamento IP e a segmentação | 2 | AC | 1min30 |
+| Os serviços TCP/IP implementados | 3 | AJ | 1min30 |
+| O funcionamento da solução utilizando Docker | 4 | AC | 2min |
+| As principais dificuldades e decisões técnicas do projeto | 5 | AJ | 1min |
+
 **Antes de começar (5 min antes):** Docker Desktop aberto e "Running"; rodar uma vez o `testar-tudo.ps1` (deixa as imagens prontas e evita esperar download na hora); Packet Tracer aberto com o `agrotech.pkt`; repositório aberto no GitHub; navegador em `http://localhost:8080`.
 
 ---
 
-## Bloco 1 — A empresa e as necessidades (AC, 1min30)
+## Bloco 0 — Abertura: a empresa e as necessidades (AC, 1min)
 
 **Mostrar:** README do repositório no GitHub.
 
-- "Nosso projeto é a rede da **AgroTech Soluções Agrícolas**, empresa fictícia de máquinas agrícolas, peças e assistência técnica, com **matriz em Goiânia e filial em Anápolis** e cerca de **40 funcionários** (28 + 12)."
-- "Levantamos as necessidades de cada setor: ERP para todos, intranet, arquivos técnicos para as oficinas, telefonia IP, câmeras, Wi-Fi corporativo e de visitantes, e comunicação segura entre as unidades."
+- "Nosso projeto é a rede LAN corporativa da **AgroTech Soluções Agrícolas**, empresa fictícia de máquinas agrícolas, peças e assistência técnica, com **matriz em Goiânia e filial em Anápolis** e cerca de **40 funcionários** (28 + 12)."
+- "Levantamos as necessidades de cada setor: ERP para todos, intranet, arquivos técnicos para as oficinas, impressão em rede, telefonia IP, câmeras, Wi-Fi corporativo e de visitantes."
 - "Contamos cerca de **100 dispositivos** hoje e a meta é crescer até **150** sem refazer a rede."
 
-## Bloco 2 — Infraestrutura física e lógica (AJ, 2min)
+## Bloco 1 — A estrutura da rede proposta (AJ, 2min)
 
-**Mostrar:** diagrama físico e diagrama lógico (`diagramas/` ou `docs/03-planejamento-infra.md`).
+**Mostrar:** `diagramas/fisico.png`, `diagramas/logico.png` e a topologia no Packet Tracer.
 
-- "Fisicamente é uma **topologia em estrela** com cabo **UTP Cat6** e Gigabit, seguindo a NBR 14565. Todo ponto de rede vai até o **rack de 24U** na sala de TI; a filial tem um rack de 4U."
-- "Equipamentos: **firewall pfSense**, switch core **Cisco CBS350-48T**, switches de distribuição **TP-Link TL-SG3428**, access points **Wi-Fi 6 EAP610**, um servidor para os serviços e nobreaks."
-- "Logicamente, dividimos a rede em **VLANs**: uma para Administrativo/Financeiro, uma para Comercial/RH, uma para TI e servidores, uma para câmeras, uma para visitantes e uma para VoIP. A filial tem as suas três."
-- "O roteamento entre VLANs é **router-on-a-stick**: um cabo trunk até o firewall, que tem uma subinterface por VLAN. Assim todo tráfego entre setores passa pelo firewall."
+- "Fisicamente é uma **topologia em estrela** com cabo **UTP Cat6** e Gigabit. Todo ponto de rede vai até o **rack de 24U** na sala de TI; a filial tem um rack de 4U." (mostrar a planta e os racks)
+- "Equipamentos: **firewall pfSense**, switch core **Cisco CBS350-48T**, switches de distribuição **TP-Link TL-SG3428**, access points **Wi-Fi 6**, um servidor para os serviços e nobreaks."
+- "Logicamente, o firewall liga num **switch core**, que liga nos switches de distribuição. O roteamento entre os setores é **router-on-a-stick**: um cabo trunk até o firewall, com uma subinterface por VLAN. Assim todo tráfego entre setores passa pelo firewall." (mostrar o diagrama lógico)
+- "Simulamos essa estrutura no **Packet Tracer**: matriz à esquerda, provedor no meio, filial à direita." (mostrar a topologia)
 
-## Bloco 3 — Plano de IP e segmentação (AC, 1min30)
+## Bloco 2 — O plano de endereçamento IP e a segmentação (AC, 1min30)
 
-**Mostrar:** tabela de VLANs do README ou `docs/04-plano-ip.md`.
+**Mostrar:** tabela de VLANs do README ou `docs/03-plano-de-enderecamento-ip.md`.
 
-- "Usamos **um /24 por VLAN**, com o **terceiro octeto igual ao número da VLAN**: VLAN 10 é 192.168.10.0, VLAN 40 é 192.168.40.0. Na filial somamos 100: VLAN 110, 120, 150."
-- "O gateway é sempre o **.1**. De .10 a .99 ficam os IPs fixos; de **.100 a .200** é o pool do DHCP."
+- "Segmentamos a rede em **VLANs**: Administrativo/Financeiro (10), Comercial/RH/Recepção (20), TI e servidores (30), câmeras (40), visitantes (50) e VoIP (60). A filial tem 110, 120 e 150."
+- "Usamos **um /24 por VLAN**, com o **terceiro octeto igual ao número da VLAN**: VLAN 10 é 192.168.10.0, VLAN 40 é 192.168.40.0. A máscara é 255.255.255.0."
+- "O gateway é sempre o **.1**. De .10 a .99 ficam os IPs fixos (servidores, impressoras); de **.100 a .200** é o pool do DHCP."
 - "Um /24 tem **254 hosts**. A maior VLAN usa uns 35, então sobra espaço para os 150 dispositivos."
-- "Os links WAN são **/30**, só dois endereços, um em cada ponta."
+- "A segmentação também é segurança: a rede de **visitantes** só acessa a Internet." (no Packet Tracer: Laptop-Visitante `ping 8.8.8.8` funciona, `ping 192.168.10.100` falha → "é a **ACL** bloqueando")
 
-## Bloco 4 — Packet Tracer (AJ, 1min30)
+## Bloco 3 — Os serviços TCP/IP implementados (AJ, 1min30)
 
-**Mostrar:** `agrotech.pkt` funcionando.
+**Mostrar:** tabela de serviços no `docs/04-configuracao-dos-servicos-docker.md` e o Packet Tracer.
 
-1. Topologia: "matriz à esquerda, provedor no meio, filial à direita."
-2. No **PC-ADM**: `ipconfig` → "recebeu IP do servidor DHCP, que está em outra VLAN, graças ao **ip helper-address** no roteador."
-3. Navegador do PC-ADM: `http://intranet.agrotech.local` → "o DNS resolveu e o servidor web respondeu."
-4. `ping` do PC-ADM até o PC da filial → "matriz e filial se comunicam."
-5. **Laptop-Visitante**: `ping 8.8.8.8` funciona, `ping 192.168.10.100` falha → "a **ACL** deixa o visitante só na Internet."
+- "O enunciado pede pelo menos dois serviços; implementamos **quatro**, todos na VLAN 30:"
+  - "**DHCP** (192.168.30.10, porta 67/UDP): entrega IP, máscara, gateway e DNS automaticamente."
+  - "**DNS** (192.168.30.11, porta 53): traduz `intranet.agrotech.local` para o IP do servidor web e encaminha nomes externos para a Internet."
+  - "**Web** (192.168.30.12, porta 80): hospeda a página interna, a intranet."
+  - "**FTP** (192.168.30.13, porta 21): transferência de arquivos, como manuais técnicos."
+- No Packet Tracer, no **PC-ADM**: `ipconfig` → "recebeu IP de um servidor que está em **outra VLAN**, graças ao **ip helper-address** no roteador". Navegador em `http://intranet.agrotech.local` → "o DNS resolveu e o servidor web respondeu."
 
-## Bloco 5 — Serviços com Docker (AC, 2min)
+## Bloco 4 — O funcionamento da solução utilizando Docker (AC, 2min)
 
 **Mostrar:** terminal + Docker Desktop + navegador.
 
 1. Rodar `powershell -ExecutionPolicy Bypass -File .\docker\scripts\testar-tudo.ps1` e, enquanto roda:
    - "Cada serviço é um **container**: DHCP no .10, DNS no .11, Web no .12 e FTP no .13. Os IPs são os mesmos do plano e do Packet Tracer."
-   - "Tudo é definido no **docker-compose.yml**: a rede `agrotech-lan` imita a VLAN 30 e cada serviço tem IP fixo."
+   - "Tudo é definido no **docker-compose.yml**: a rede `agrotech-lan` imita a VLAN 30 e cada serviço tem IP fixo. As configurações ficam em arquivos no GitHub, montados nos containers."
 2. Apontar o **Teste 1**: "o cliente começou com o IP que o Docker deu e trocou pelo IP do nosso DHCP. No log aparecem as quatro mensagens: **DISCOVER, OFFER, REQUEST, ACK**."
 3. Apontar o **Teste 2**: "o DNS respondeu `intranet` com .12, o `erp` como apelido (CNAME) e encaminhou `google.com` para a Internet."
-4. Navegador em `http://localhost:8080`: "e aqui a intranet servida pelo nginx."
-5. Resumo: "os quatro testes passaram."
+4. Navegador em `http://localhost:8080`: "e aqui a página interna servida pelo nginx."
+5. Resumo: "os quatro testes passaram. Qualquer pessoa reproduz isso com o passo a passo do repositório."
 
-## Bloco 6 — Dificuldades e decisões (AJ, 1min)
+## Bloco 5 — As principais dificuldades e decisões técnicas (AJ, 1min)
 
 - "A maior limitação: no **Docker Desktop do Windows**, os containers ficam numa máquina virtual e o broadcast do DHCP não chega na rede física. Por isso o DHCP é demonstrado **entre containers**. Em produção, o DHCP ficaria no servidor da VLAN 30 atendendo as outras VLANs pelo **relay**, que é o que mostramos no Packet Tracer."
-- "A **VPN IPSec** entre os pfSense ficou documentada, porque o Packet Tracer não tem pfSense; na simulação usamos rotas estáticas e, como extra, um túnel GRE."
-- "Também resolvemos dois problemas práticos: o arquivo de DNS do cliente, que o Docker trava, e a primeira oferta do DHCP que se perdia, resolvida com `dhcp-broadcast`."
+- "Escolhemos o **dnsmasq** por ser leve e fazer DHCP e DNS; usamos dois containers separados para cada serviço ter seu IP."
+- "Resolvemos dois problemas práticos: o arquivo de DNS do cliente, que o Docker trava, e a primeira oferta do DHCP que se perdia, resolvida com `dhcp-broadcast`."
+- "A **VPN** entre matriz e filial ficou documentada, porque o Packet Tracer não tem pfSense; na simulação usamos rotas estáticas."
 
 **Fechamento (AC, 15 s):** "Está tudo no GitHub com o passo a passo para reproduzir. Obrigada!"
 
@@ -68,7 +83,7 @@
 | Problema | O que fazer |
 |---|---|
 | Docker não sobe / sem Internet | Mostrar as evidências já gravadas em `evidencias/*.txt` e os prints `docker-*.png` |
-| Packet Tracer trava | Mostrar os prints `pt-*.png` em `docs/06-testes-e-evidencias.md` |
+| Packet Tracer trava | Mostrar os prints `pt-*.png` em `docs/05-documentacao-e-evidencias.md` |
 | Primeiro ping falha no PT | Normal (ARP). Rodar o ping de novo |
 | Porta 8080 ocupada | Trocar para `"8081:80"` no `docker-compose.yml` e usar `http://localhost:8081` |
 
@@ -110,7 +125,7 @@ Com router-on-a-stick todo tráfego entre setores passa pelo firewall pfSense e 
 Um túnel criptografado (IPSec) entre os firewalls da matriz e da filial pela Internet. Para os usuários, parece que as duas unidades estão na mesma rede, mas o tráfego vai cifrado.
 
 **Por que a VPN não está no Packet Tracer?**
-O projeto real usa pfSense, que não existe no PT. Simulamos a conectividade com rotas estáticas e mostramos o conceito de túnel com GRE (que encapsula mas não criptografa). A configuração do IPSec no pfSense está documentada no doc 07.
+O projeto real usa pfSense, que não existe no PT. Simulamos a conectividade com rotas estáticas e mostramos o conceito de túnel com GRE (que encapsula mas não criptografa). A configuração do IPSec no pfSense está documentada no doc 6.
 
 **O que a ACL dos visitantes faz?**
 Na entrada da subinterface dos visitantes, permite DHCP e consulta DNS, **bloqueia** todas as redes internas (192.168.0.0/16) e libera o resto, que é a Internet.

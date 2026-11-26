@@ -1,6 +1,15 @@
-# 4. Plano de endereçamento IP
+# 3. Plano de endereçamento IP e segmentação
 
-## 4.1 Regras do plano
+> **Itens do enunciado atendidos neste documento** (requisito obrigatório 3 — critério "Plano de endereçamento IP e segmentação", 2,0 pts)
+>
+> | Item pedido | Seção |
+> |---|---|
+> | Definição das redes e sub-redes | [3.3](#33-matriz-goiânia), [3.4](#34-filial-anápolis), [3.5](#35-links-wan) |
+> | Endereços IP e máscaras de rede | [3.2](#32-máscara-24-cálculo), tabelas de 3.3 a 3.6 |
+> | Identificação dos gateways | Coluna "Gateway" de 3.3 e 3.4; regra em [3.1](#31-regras-do-plano) |
+> | Distribuição dos endereços IP por setor ou departamento | [3.6](#36-endereços-fixos) e [3.7](#37-distribuição-por-setor) |
+
+## 3.1 Regras do plano
 
 1. **Faixa privada 192.168.0.0/16** (RFC 1918) para todas as redes internas.
 2. **Uma sub-rede /24 por VLAN**, com o **terceiro octeto igual ao número da VLAN**: VLAN 10 → 192.168.**10**.0/24, VLAN 110 → 192.168.**110**.0/24. Olhando um IP, já se sabe a VLAN e o setor.
@@ -19,7 +28,7 @@
 
 6. **Links WAN em /30** (2 hosts úteis, exatamente as duas pontas), usando as faixas de documentação 203.0.113.0/24 e 198.51.100.0/24 (RFC 5737), por se tratar de um projeto acadêmico.
 
-## 4.2 Máscara /24: cálculo
+## 3.2 Máscara /24: cálculo
 
 | Item | Valor |
 |---|---|
@@ -32,7 +41,7 @@
 
 Exemplo da VLAN 10: rede **192.168.10.0**, primeiro host 192.168.10.1, último host 192.168.10.254, broadcast **192.168.10.255**.
 
-## 4.3 Matriz (Goiânia)
+## 3.3 Matriz (Goiânia)
 
 | VLAN | Setor(es) | Rede | Máscara | Gateway | Broadcast | Pool DHCP | Hosts úteis | Uso atual |
 |---|---|---|---|---|---|---|---|---|
@@ -43,7 +52,7 @@ Exemplo da VLAN 10: rede **192.168.10.0**, primeiro host 192.168.10.1, último h
 | 50 | Wi-Fi Visitantes | 192.168.50.0/24 | 255.255.255.0 | 192.168.50.1 | 192.168.50.255 | .100 – .200 | 254 | 10–20 |
 | 60 | VoIP | 192.168.60.0/24 | 255.255.255.0 | 192.168.60.1 | 192.168.60.255 | .100 – .200 | 254 | 22 |
 
-## 4.4 Filial (Anápolis)
+## 3.4 Filial (Anápolis)
 
 | VLAN | Setor(es) | Rede | Máscara | Gateway | Broadcast | Pool DHCP | Hosts úteis | Uso atual |
 |---|---|---|---|---|---|---|---|---|
@@ -53,7 +62,7 @@ Exemplo da VLAN 10: rede **192.168.10.0**, primeiro host 192.168.10.1, último h
 
 Na filial, os 6 telefones IP ficam provisoriamente nas VLANs de dados (110 e 120), com marcação de prioridade (DSCP EF) feita pelo próprio aparelho. A VLAN **160** está reservada para VoIP da filial e a **140** para câmeras da filial, na próxima fase.
 
-## 4.5 Links WAN
+## 3.5 Links WAN
 
 | Link | Rede | Máscara | Ponta A | Ponta B |
 |---|---|---|---|---|
@@ -64,7 +73,7 @@ Na filial, os 6 telefones IP ficam provisoriamente nas VLANs de dados (110 e 120
 
 Cálculo do /30: 32 − 30 = 2 bits de host → 4 endereços → 2 hosts úteis. Em 203.0.113.0/30: rede .0, hosts .1 e .2, broadcast .3. Usar /30 evita desperdiçar endereços públicos num link que só tem duas pontas.
 
-## 4.6 Endereços fixos
+## 3.6 Endereços fixos
 
 ### VLAN 30 — TI / Servidores (matriz)
 
@@ -99,7 +108,7 @@ Cálculo do /30: 32 − 30 = 2 bits de host → 4 endereços → 2 hosts úteis.
 | 192.168.110.11 | Impressora Escritório |
 | 192.168.120.10 | Impressora Oficina (filial) |
 
-## 4.7 Distribuição por setor
+## 3.7 Distribuição por setor
 
 | Unidade | Setor | VLAN | Rede | Gateway | Forma de endereçamento |
 |---|---|---|---|---|---|
@@ -123,7 +132,7 @@ Cálculo do /30: 32 − 30 = 2 bits de host → 4 endereços → 2 hosts úteis.
 
 Todos os clientes DHCP recebem: **gateway** = `.1` da própria VLAN, **DNS** = 192.168.30.11, **domínio** = `agrotech.local`, **concessão** de 12 horas.
 
-## 4.8 Justificativa das decisões
+## 3.8 Justificativa das decisões
 
 - **Por que /24 em todas as VLANs, e não máscaras menores (VLSM)?** A faixa privada 192.168.0.0/16 tem 256 redes /24 disponíveis; economizar endereços não é necessário. O /24 é a máscara mais fácil de ler e administrar (o último octeto é o host), e com 254 hosts por VLAN comporta com folga a meta de **150 dispositivos**: mesmo que todo o crescimento caísse numa única VLAN, ela ainda teria espaço.
 - **Por que o terceiro octeto igual à VLAN?** Reduz erros de configuração e acelera o diagnóstico: ao ver `192.168.40.23` no log do firewall, a equipe sabe que é uma câmera da matriz.
@@ -132,6 +141,6 @@ Todos os clientes DHCP recebem: **gateway** = `.1` da própria VLAN, **DNS** = 1
 - **Por que /30 na WAN?** Um link ponto a ponto só precisa de dois endereços.
 - **Por que endereços de documentação na WAN?** São faixas reservadas para exemplos (RFC 5737), que nunca aparecem na Internet real. No projeto implantado, seriam substituídas pelos IPs fixos contratados com a Vivo Empresas.
 
-## 4.9 Correspondência com o ambiente Docker
+## 3.9 Correspondência com o ambiente Docker
 
-A rede Docker `agrotech-lan` reproduz a **VLAN 30**: mesma sub-rede (192.168.30.0/24), mesmo gateway (.1), mesmos IPs fixos de servidores (.10 a .13) e mesmo pool DHCP (.100 a .200). O Docker só atribui IPs automáticos dentro de `ip_range: 192.168.30.0/28` (.1 a .14), longe do pool. Detalhes em [05 — Serviços Docker](05-servicos-docker.md).
+A rede Docker `agrotech-lan` reproduz a **VLAN 30**: mesma sub-rede (192.168.30.0/24), mesmo gateway (.1), mesmos IPs fixos de servidores (.10 a .13) e mesmo pool DHCP (.100 a .200). O Docker só atribui IPs automáticos dentro de `ip_range: 192.168.30.0/28` (.1 a .14), longe do pool. Detalhes em [4 — Configuração dos serviços](04-configuracao-dos-servicos-docker.md).

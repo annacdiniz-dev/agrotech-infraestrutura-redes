@@ -1,6 +1,15 @@
-# 3. Planejamento da infraestrutura
+# 2. Planejamento da infraestrutura de rede
 
-## 3.1 Visão geral
+> **Itens do enunciado atendidos neste documento** (requisito obrigatório 2 — critério "Diagramas físicos e lógicos da rede", 2,0 pts)
+>
+> | Item pedido | Seção |
+> |---|---|
+> | Elaboração do esquema físico da rede | [2.2](#22-esquema-físico) + [`diagramas/fisico.drawio`](../diagramas/fisico.drawio) |
+> | Elaboração do esquema lógico da rede | [2.3](#23-esquema-lógico) + [`diagramas/logico.drawio`](../diagramas/logico.drawio) |
+> | Identificação dos equipamentos necessários (switches, roteadores, servidores, computadores etc.) | [2.4](#24-equipamentos-necessários) |
+> | Definição da segmentação lógica da rede (VLANs ou sub-redes) | [2.6](#26-segmentação-lógica-vlans) |
+
+## 2.1 Visão geral
 
 A rede da AgroTech segue o **modelo hierárquico** de projeto de redes, em versão compacta adequada a uma empresa de médio porte:
 
@@ -16,7 +25,7 @@ O **roteamento entre VLANs** é feito no modelo **router-on-a-stick**: o firewal
 
 ---
 
-## 3.2 Esquema físico
+## 2.2 Esquema físico
 
 ### Planta baixa da matriz (Goiânia), cerca de 30 m × 18 m
 
@@ -163,7 +172,7 @@ Seguindo a ABNT NBR 14565:
 
 ---
 
-## 3.3 Esquema lógico
+## 2.3 Esquema lógico
 
 ```mermaid
 flowchart TB
@@ -222,7 +231,7 @@ flowchart TB
 
 ---
 
-## 3.4 Equipamentos necessários
+## 2.4 Equipamentos necessários
 
 | Equipamento | Modelo (projeto real) | Qtd. | Local | Justificativa |
 |---|---|---|---|---|
@@ -246,7 +255,7 @@ flowchart TB
 
 ---
 
-## 3.5 Ocupação de portas dos switches
+## 2.5 Ocupação de portas dos switches
 
 | Switch | Portas | Conectados | Uplinks | Livres | Observação |
 |---|---|---|---|---|---|
@@ -259,7 +268,7 @@ Com cerca de 50 portas livres no total, a rede comporta o crescimento para 150 d
 
 ---
 
-## 3.6 Segmentação lógica (VLANs)
+## 2.6 Segmentação lógica (VLANs)
 
 | VLAN | Nome | Unidade | Setores | Sub-rede |
 |---|---|---|---|---|
@@ -275,11 +284,11 @@ Com cerca de 50 portas livres no total, a rede comporta o crescimento para 150 d
 | 99 | NATIVA | Ambas | VLAN nativa dos trunks (sem hosts) | — |
 | 999 | PORTAS-NAO-USADAS | Ambas | Portas desligadas | — |
 
-Por que separar assim: Administração e Financeiro lidam com dados financeiros e ficam isolados do restante; o RH, apesar de sigiloso, compartilha a VLAN 20 com o Comercial por ter apenas 2 estações, e o acesso aos dados do RH é controlado no próprio ERP. Câmeras e visitantes são os segmentos de maior risco e ficam totalmente isolados. Voz tem VLAN própria para receber prioridade (QoS). O endereçamento completo está em [04 — Plano de IP](04-plano-ip.md).
+Por que separar assim: Administração e Financeiro lidam com dados financeiros e ficam isolados do restante; o RH, apesar de sigiloso, compartilha a VLAN 20 com o Comercial por ter apenas 2 estações, e o acesso aos dados do RH é controlado no próprio ERP. Câmeras e visitantes são os segmentos de maior risco e ficam totalmente isolados. Voz tem VLAN própria para receber prioridade (QoS). O endereçamento completo está em [3 — Plano de endereçamento IP](03-plano-de-enderecamento-ip.md).
 
 ---
 
-## 3.7 Projeto real × simulação
+## 2.7 Projeto real × simulação
 
 O Packet Tracer e o Docker Desktop têm limitações. A tabela mostra como cada elemento do projeto real foi representado:
 
@@ -287,7 +296,7 @@ O Packet Tracer e o Docker Desktop têm limitações. A tabela mostra como cada 
 |---|---|---|
 | Firewall pfSense (matriz e filial) | Roteadores Cisco 2911 com subinterfaces e ACL | O PT não tem pfSense; o conceito (router-on-a-stick + filtragem) é o mesmo |
 | Cisco CBS350-48T / TP-Link TL-SG3428 | Switch Cisco 2960-24TT | Modelos disponíveis no PT; mesmos recursos usados (VLAN, trunk, RSTP) |
-| VPN IPSec Site-to-Site | Rotas estáticas via R-ISP (e túnel GRE opcional) | VPN IPSec entre pfSense não é simulável no PT. Ver [07 — Decisões](07-dificuldades-e-decisoes.md) |
+| VPN IPSec Site-to-Site | Rotas estáticas via R-ISP (e túnel GRE opcional) | VPN IPSec entre pfSense não é simulável no PT. Ver [6 — Dificuldades e decisões técnicas](06-dificuldades-e-decisoes-tecnicas.md) |
 | Internet | Loopback 8.8.8.8 no R-ISP | Destino externo para testar a navegação dos visitantes |
 | Servidor de infraestrutura com 4 containers | 4 Server-PT (SRV-DHCP, SRV-DNS, SRV-WEB, SRV-FTP) com os mesmos IPs | No PT cada serviço vira um servidor; no Docker, cada um é um container |
 | APs com vários SSIDs (corporativo na VLAN 20 + visitantes na VLAN 50) em porta trunk | AccessPoint-PT em porta access da VLAN 50 | O AccessPoint-PT não faz *tagging* de VLAN; simulamos só o SSID de visitantes |

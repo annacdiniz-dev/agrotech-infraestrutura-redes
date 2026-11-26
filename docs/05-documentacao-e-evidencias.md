@@ -1,11 +1,22 @@
-# 6. Testes e evidências
+# 5. Documentação e evidências
 
-Este documento lista cada teste realizado, o comando usado, o resultado esperado e onde está a evidência. Há dois ambientes:
+> **Itens do enunciado atendidos** (requisito obrigatório 5 — critério "Documentação e organização do projeto", 1,0 pt)
+>
+> | Item pedido | Onde está |
+> |---|---|
+> | Descrição das configurações realizadas | [Doc 4 › Explicação das configurações](04-configuracao-dos-servicos-docker.md#45-explicação-das-configurações) (linha a linha); [guia do Packet Tracer](../packet-tracer/README.md) |
+> | Imagens ou capturas de tela dos serviços em funcionamento | Seções 5.2 e 5.3 abaixo; arquivos em [`evidencias/prints/`](../evidencias/prints/) |
+> | Arquivos de configuração e comandos utilizados | [`docker/`](../docker/) (compose, dnsmasq, nginx, vsftpd, scripts), [`packet-tracer/configs/`](../packet-tracer/configs/); comandos em cada teste abaixo e no [doc 4](04-configuracao-dos-servicos-docker.md#44-como-reproduzir-do-zero) |
+> | Explicação das soluções adotadas | [Doc 6 — Dificuldades e decisões técnicas](06-dificuldades-e-decisoes-tecnicas.md) |
+>
+> A documentação permite **reproduzir** a solução do zero: ver [doc 4, seção 4.4](04-configuracao-dos-servicos-docker.md#44-como-reproduzir-do-zero).
+
+Esta seção lista cada teste realizado, o comando usado, o resultado esperado e onde está a evidência. Há dois ambientes:
 
 - **Docker** (serviços reais em containers): as saídas são geradas automaticamente pelo script [`docker/scripts/testar-tudo.ps1`](../docker/scripts/testar-tudo.ps1) e gravadas em [`evidencias/`](../evidencias/).
 - **Cisco Packet Tracer** (simulação da infraestrutura completa): as evidências são prints em [`evidencias/prints/`](../evidencias/prints/). O roteiro de execução está em [`packet-tracer/README.md`](../packet-tracer/README.md#9-executar-os-testes).
 
-## 6.1 Resumo
+## 5.1 Resumo
 
 | # | Ambiente | Teste | Resultado | Evidência |
 |---|---|---|---|---|
@@ -20,7 +31,7 @@ Resumo da última execução do script: [`resumo-testes.txt`](../evidencias/resu
 
 ---
 
-## 6.2 Testes no Docker
+## 5.2 Testes no Docker
 
 ### D0 — Serviços no ar
 
@@ -155,7 +166,7 @@ powershell -ExecutionPolicy Bypass -File .\docker\scripts\testar-tudo.ps1
 
 ---
 
-## 6.3 Testes no Packet Tracer
+## 5.3 Testes no Packet Tracer
 
 Roteiro detalhado: [`packet-tracer/README.md` › Executar os testes](../packet-tracer/README.md#9-executar-os-testes).
 

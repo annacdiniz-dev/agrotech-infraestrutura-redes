@@ -1,8 +1,19 @@
-# 5. Serviços de rede com Docker
+# 4. Configuração dos serviços de rede (implementação com Docker)
 
-## 5.1 Objetivo
+> **Itens do enunciado atendidos neste documento** (requisito obrigatório 4 — critério "Implementação dos serviços TCP/IP com Docker", 3,0 pts)
+>
+> O enunciado pede **pelo menos dois** serviços de rede. Foram implementados e demonstrados **quatro**:
+>
+> | Serviço citado no enunciado | Implementação | Testado |
+> |---|---|---|
+> | DHCP — distribuição automática de endereços IP | Container `agrotech-dhcp` (dnsmasq), 192.168.30.10 | Sim |
+> | DNS — resolução de nomes | Container `agrotech-dns` (dnsmasq), 192.168.30.11 | Sim |
+> | Servidor Web — hospedagem de uma página interna | Container `agrotech-web` (nginx) com a intranet, 192.168.30.12 | Sim |
+> | Servidor FTP — transferência de arquivos | Container `agrotech-ftp` (vsftpd), 192.168.30.13 | Sim |
 
-Implementar na prática os serviços de infraestrutura da VLAN 30 da AgroTech, cada um em um container:
+## 4.1 Objetivo
+
+Implementar e demonstrar na prática os serviços TCP/IP de infraestrutura da VLAN 30 da AgroTech, cada um em um container:
 
 | Serviço | Container | IP fixo | Software | Porta | Papel na rede |
 |---|---|---|---|---|---|
@@ -12,9 +23,9 @@ Implementar na prática os serviços de infraestrutura da VLAN 30 da AgroTech, c
 | **FTP** (bônus) | `agrotech-ftp` | 192.168.30.13 | vsftpd | 21/TCP + 21100–21110 (passivo) | Troca de arquivos (manuais, catálogos, laudos) |
 | Cliente de teste | `agrotech-cliente` | via DHCP | Alpine + udhcpc, nslookup, dig, curl | — | Simula o PC de um funcionário |
 
-Os quatro serviços foram testados e funcionaram (ver [06 — Testes e evidências](06-testes-e-evidencias.md)).
+Os quatro serviços foram testados e funcionaram (ver [5 — Documentação e evidências](05-documentacao-e-evidencias.md)).
 
-## 5.2 Arquitetura
+## 4.2 Arquitetura
 
 ```mermaid
 flowchart LR
@@ -38,9 +49,9 @@ flowchart LR
     NAV -- "porta 8080 → 80" --> WEB
 ```
 
-A rede `agrotech-lan` é um **switch virtual** (bridge Linux) criado pelo Docker. Ela usa a mesma sub-rede, o mesmo gateway e os mesmos IPs fixos da VLAN 30 do [plano de IP](04-plano-ip.md). O gateway 192.168.30.1 é a própria bridge do Docker, que faz NAT para a Internet. É por ele que o DNS alcança 8.8.8.8 e 1.1.1.1.
+A rede `agrotech-lan` é um **switch virtual** (bridge Linux) criado pelo Docker. Ela usa a mesma sub-rede, o mesmo gateway e os mesmos IPs fixos da VLAN 30 do [plano de IP](03-plano-de-enderecamento-ip.md). O gateway 192.168.30.1 é a própria bridge do Docker, que faz NAT para a Internet. É por ele que o DNS alcança 8.8.8.8 e 1.1.1.1.
 
-## 5.3 Estrutura dos arquivos
+## 4.3 Estrutura dos arquivos
 
 ```
 docker/
@@ -70,7 +81,7 @@ docker/
 
 As configurações ficam **versionadas no Git** e são **montadas como volumes somente leitura** (`:ro`) nos containers. Para mudar algo (por exemplo, um registro DNS), basta editar o arquivo e recriar o container, sem reconstruir a imagem.
 
-## 5.4 Como reproduzir do zero
+## 4.4 Como reproduzir do zero
 
 **Pré-requisitos:** Windows 10/11 com Docker Desktop instalado e aberto (ícone da baleia "Running"), Git e acesso à Internet (para baixar as imagens base `alpine:3.20` e `nginx:1.27-alpine`).
 
@@ -88,7 +99,7 @@ start http://localhost:8080
 # 4. Ver os logs do DHCP (processo DORA)
 docker compose -f docker\docker-compose.yml logs dhcp
 
-# 5. Desligar tudo
+# 4. Desligar tudo
 powershell -ExecutionPolicy Bypass -File .\docker\scripts\derrubar.ps1
 ```
 
@@ -124,9 +135,9 @@ docker compose exec cliente curl --list-only ftp://agrotech:agrotech123@ftp.agro
 docker compose --profile test down           # remove tudo
 ```
 
-## 5.5 Explicação das configurações
+## 4.5 Explicação das configurações
 
-### 5.5.1 `docker-compose.yml`
+### 4.5.1 `docker-compose.yml`
 
 | Trecho | O que faz |
 |---|---|
@@ -151,7 +162,7 @@ docker compose --profile test down           # remove tudo
 | `gateway: 192.168.30.1` | Mesmo gateway do plano de IP. |
 | `ip_range: 192.168.30.0/28` | O Docker só sorteia IPs automáticos entre .1 e .14, longe do pool do nosso DHCP (.100–.200). Assim o Docker e o dnsmasq nunca entregam o mesmo endereço. |
 
-### 5.5.2 DHCP — `docker/dhcp/dnsmasq.conf`
+### 4.5.2 DHCP — `docker/dhcp/dnsmasq.conf`
 
 | Linha | Significado |
 |---|---|
@@ -166,9 +177,9 @@ docker compose --profile test down           # remove tudo
 | `dhcp-leasefile=/var/lib/misc/dnsmasq.leases` | Arquivo onde as concessões são registradas. |
 | `log-dhcp` | Registra cada etapa do DORA e as opções enviadas. |
 | `log-facility=-` | Envia o log para a saída padrão (visível com `docker compose logs dhcp`). |
-| `dhcp-broadcast` | Envia OFFER e ACK em broadcast. Sem isso, a primeira resposta era perdida na bridge do Docker e o cliente precisava repetir o DISCOVER (ver [07](07-dificuldades-e-decisoes.md)). |
+| `dhcp-broadcast` | Envia OFFER e ACK em broadcast. Sem isso, a primeira resposta era perdida na bridge do Docker e o cliente precisava repetir o DISCOVER (ver [doc 6](06-dificuldades-e-decisoes-tecnicas.md)). |
 
-### 5.5.3 DNS — `docker/dns/dnsmasq.conf` e `agrotech.hosts`
+### 4.5.3 DNS — `docker/dns/dnsmasq.conf` e `agrotech.hosts`
 
 | Linha | Significado |
 |---|---|
@@ -196,7 +207,7 @@ Registros da zona (`agrotech.hosts`):
 | ftp.agrotech.local | A | 192.168.30.13 |
 | erp.agrotech.local | CNAME | intranet.agrotech.local |
 
-### 5.5.4 Web — `docker/web/nginx.conf`
+### 4.5.4 Web — `docker/web/nginx.conf`
 
 | Linha | Significado |
 |---|---|
@@ -207,7 +218,7 @@ Registros da zona (`agrotech.hosts`):
 | `location = /saude { return 200 "OK ..."; }` | Endereço de verificação de saúde, usado nos testes automáticos. |
 | `access_log /dev/stdout;` | Log de acessos na saída do container (`docker compose logs web`). |
 
-### 5.5.5 FTP — `docker/ftp/vsftpd.conf`
+### 4.5.5 FTP — `docker/ftp/vsftpd.conf`
 
 | Linha | Significado |
 |---|---|
@@ -219,15 +230,15 @@ Registros da zona (`agrotech.hosts`):
 | `seccomp_sandbox=NO` | Desliga um recurso de isolamento do vsftpd incompatível com alguns kernels de container. |
 | `xferlog_enable`, `log_ftp_protocol`, `vsftpd_log_file=/proc/1/fd/1` | Registra comandos e transferências na saída do container. |
 
-### 5.5.6 Cliente de teste — `docker/cliente/`
+### 4.5.6 Cliente de teste — `docker/cliente/`
 
 O cliente é um Alpine Linux com `udhcpc` (cliente DHCP do BusyBox), `nslookup`/`dig` e `curl`. Ele recebe um IP inicial do Docker (faixa .0/28) e, ao rodar `udhcpc`, **troca esse IP pelo endereço entregue pelo nosso DHCP**. O `udhcpc.script` aplica IP, máscara, gateway e grava o DNS em `/etc/resolv.conf`. A partir daí, o cliente usa o nosso DNS para tudo, como um PC real da empresa.
 
-## 5.6 Como os serviços se encaixam no projeto real
+## 4.6 Como os serviços se encaixam no projeto real
 
 Em produção, os mesmos arquivos de configuração rodariam no **servidor de infraestrutura** do rack (Ubuntu Server + Docker, IP 192.168.30.9), com duas diferenças:
 
 1. A rede dos containers usaria o driver **macvlan** (ou ipvlan) sobre a interface da VLAN 30, para que cada container tenha um IP "real" na rede física.
 2. O DHCP atenderia **todas as VLANs**, com um `dhcp-range` por rede (ex.: `dhcp-range=set:vlan10,192.168.10.100,192.168.10.200,12h` e a opção de gateway correspondente), recebendo os pedidos encaminhados pelo `ip helper-address` / DHCP Relay do firewall. É exatamente o que a simulação do Packet Tracer demonstra.
 
-As limitações do Docker Desktop que levaram a usar a rede bridge estão em [07 — Dificuldades e decisões](07-dificuldades-e-decisoes.md).
+As limitações do Docker Desktop que levaram a usar a rede bridge estão em [6 — Dificuldades e decisões técnicas](06-dificuldades-e-decisoes-tecnicas.md).
