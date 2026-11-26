@@ -1,0 +1,88 @@
+! =====================================================================
+!  R-FILIAL  - Cisco 2911 - Roteador da filial (Anapolis)
+!  Funcao: router-on-a-stick, relay DHCP para o servidor da MATRIZ
+!          (192.168.30.10, atraves da WAN) e ACL da rede de visitantes.
+!  Ligacoes: Gi0/0 -> SW-FILIAL Gi0/1 (trunk 802.1Q)
+!            Gi0/1 -> R-ISP Gi0/1     (WAN 198.51.100.0/30)
+! =====================================================================
+enable
+configure terminal
+!
+! ---------- Identificacao e seguranca basica ----------
+hostname R-FILIAL
+no ip domain-lookup
+enable secret AgroTech2026
+service password-encryption
+banner motd #Acesso restrito - AgroTech Solucoes Agricolas - R-FILIAL#
+line vty 0 4
+ password AgroTech2026
+ login
+ exit
+line console 0
+ logging synchronous
+ exit
+!
+! ---------- ACL da VLAN 150 (Wi-Fi visitantes da filial) ----------
+ip access-list extended VISITANTES-FILIAL
+ remark DHCP (repassado pelo ip helper ate a matriz)
+ permit udp any any eq bootps
+ remark Consulta ao DNS interno (somente porta 53)
+ permit udp 192.168.150.0 0.0.0.255 host 192.168.30.11 eq domain
+ remark Bloqueia todas as redes internas da AgroTech
+ deny ip 192.168.150.0 0.0.0.255 192.168.0.0 0.0.255.255
+ remark Libera o restante (Internet)
+ permit ip 192.168.150.0 0.0.0.255 any
+ exit
+!
+! ---------- Interface fisica do trunk ----------
+interface GigabitEthernet0/0
+ description TRUNK 802.1Q para SW-FILIAL Gi0/1
+ no ip address
+ no shutdown
+ exit
+!
+! ---------- Subinterfaces ----------
+interface GigabitEthernet0/0.110
+ description VLAN 110 - Administrativo/Atendimento
+ encapsulation dot1Q 110
+ ip address 192.168.110.1 255.255.255.0
+ ip helper-address 192.168.30.10
+ exit
+interface GigabitEthernet0/0.120
+ description VLAN 120 - Oficina/Estoque
+ encapsulation dot1Q 120
+ ip address 192.168.120.1 255.255.255.0
+ ip helper-address 192.168.30.10
+ exit
+interface GigabitEthernet0/0.150
+ description VLAN 150 - Wi-Fi Visitantes (somente Internet)
+ encapsulation dot1Q 150
+ ip address 192.168.150.1 255.255.255.0
+ ip helper-address 192.168.30.10
+ ip access-group VISITANTES-FILIAL in
+ exit
+interface GigabitEthernet0/0.99
+ description VLAN 99 - Nativa do trunk (sem uso para dados)
+ encapsulation dot1Q 99 native
+ exit
+!
+! ---------- WAN ----------
+interface GigabitEthernet0/1
+ description WAN - Provedor (R-ISP Gi0/1) - 198.51.100.0/30
+ ip address 198.51.100.2 255.255.255.252
+ no shutdown
+ exit
+!
+! ---------- Rotas estaticas ----------
+! Redes da matriz (Goiania), via provedor (em producao: VPN IPSec).
+ip route 192.168.10.0 255.255.255.0 198.51.100.1
+ip route 192.168.20.0 255.255.255.0 198.51.100.1
+ip route 192.168.30.0 255.255.255.0 198.51.100.1
+ip route 192.168.40.0 255.255.255.0 198.51.100.1
+ip route 192.168.50.0 255.255.255.0 198.51.100.1
+ip route 192.168.60.0 255.255.255.0 198.51.100.1
+! Rota padrao para a Internet.
+ip route 0.0.0.0 0.0.0.0 198.51.100.1
+!
+end
+write memory

@@ -1,0 +1,82 @@
+! =====================================================================
+!  OPCIONAL - Tunel GRE entre MATRIZ e FILIAL
+!  Faça isto SOMENTE depois que todos os testes principais passarem.
+!
+!  Ideia: em vez de o provedor (R-ISP) conhecer as redes privadas,
+!  matriz e filial conversam por um tunel ponto a ponto (172.16.0.0/30)
+!  que passa "por dentro" da Internet. E o mesmo principio da VPN
+!  Site-to-Site do projeto real (la com criptografia IPSec; o GRE puro
+!  nao criptografa, apenas encapsula).
+! =====================================================================
+
+! ---------- 1) No R-MATRIZ ----------
+enable
+configure terminal
+interface Tunnel0
+ description Tunel GRE para a FILIAL
+ ip address 172.16.0.1 255.255.255.252
+ tunnel source GigabitEthernet0/1
+ tunnel destination 198.51.100.2
+ exit
+! troca o caminho das redes da filial: agora pelo tunel
+no ip route 192.168.110.0 255.255.255.0 203.0.113.2
+no ip route 192.168.120.0 255.255.255.0 203.0.113.2
+no ip route 192.168.150.0 255.255.255.0 203.0.113.2
+ip route 192.168.110.0 255.255.255.0 172.16.0.2
+ip route 192.168.120.0 255.255.255.0 172.16.0.2
+ip route 192.168.150.0 255.255.255.0 172.16.0.2
+end
+write memory
+
+! ---------- 2) No R-FILIAL ----------
+enable
+configure terminal
+interface Tunnel0
+ description Tunel GRE para a MATRIZ
+ ip address 172.16.0.2 255.255.255.252
+ tunnel source GigabitEthernet0/1
+ tunnel destination 203.0.113.1
+ exit
+no ip route 192.168.10.0 255.255.255.0 198.51.100.1
+no ip route 192.168.20.0 255.255.255.0 198.51.100.1
+no ip route 192.168.30.0 255.255.255.0 198.51.100.1
+no ip route 192.168.40.0 255.255.255.0 198.51.100.1
+no ip route 192.168.50.0 255.255.255.0 198.51.100.1
+no ip route 192.168.60.0 255.255.255.0 198.51.100.1
+ip route 192.168.10.0 255.255.255.0 172.16.0.1
+ip route 192.168.20.0 255.255.255.0 172.16.0.1
+ip route 192.168.30.0 255.255.255.0 172.16.0.1
+ip route 192.168.40.0 255.255.255.0 172.16.0.1
+ip route 192.168.50.0 255.255.255.0 172.16.0.1
+ip route 192.168.60.0 255.255.255.0 172.16.0.1
+end
+write memory
+
+! ---------- 3) Prova: o provedor deixa de conhecer as redes privadas ----------
+! No R-ISP, remova as rotas privadas. Se o ping matriz <-> filial continuar
+! funcionando, e porque o trafego esta passando pelo tunel.
+enable
+configure terminal
+no ip route 192.168.10.0 255.255.255.0 203.0.113.1
+no ip route 192.168.20.0 255.255.255.0 203.0.113.1
+no ip route 192.168.30.0 255.255.255.0 203.0.113.1
+no ip route 192.168.40.0 255.255.255.0 203.0.113.1
+no ip route 192.168.50.0 255.255.255.0 203.0.113.1
+no ip route 192.168.60.0 255.255.255.0 203.0.113.1
+no ip route 192.168.110.0 255.255.255.0 198.51.100.2
+no ip route 192.168.120.0 255.255.255.0 198.51.100.2
+no ip route 192.168.150.0 255.255.255.0 198.51.100.2
+end
+write memory
+
+! ---------- 4) Testes ----------
+! R-MATRIZ# show interface Tunnel0        (deve estar "up, line protocol is up")
+! R-MATRIZ# ping 172.16.0.2
+! PC-ADM> tracert 192.168.110.100         (o salto intermediario passa a ser 172.16.0.2)
+!
+! Atencao: com as rotas privadas removidas do R-ISP, a Internet simulada
+! (8.8.8.8) continua acessivel? NAO para as redes internas, porque o R-ISP
+! nao sabe mais voltar para 192.168.x.x. Na vida real isso e resolvido com
+! NAT no firewall. Por isso, para a apresentacao principal, use a
+! configuracao SEM o tunel e mostre o GRE apenas como demonstracao extra
+! (ou pule o passo 3).

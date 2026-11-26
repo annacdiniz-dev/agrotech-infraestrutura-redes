@@ -1,0 +1,53 @@
+! =====================================================================
+!  R-ISP  - Cisco 2911 - Simula o provedor (Vivo Empresas) e a Internet
+!  Ligacoes: Gi0/0 -> R-MATRIZ Gi0/1 (203.0.113.0/30)
+!            Gi0/1 -> R-FILIAL Gi0/1 (198.51.100.0/30)
+!  A Loopback0 (8.8.8.8) representa um servidor "na Internet", usado
+!  para provar que os visitantes conseguem navegar.
+! =====================================================================
+enable
+configure terminal
+!
+! ---------- Identificacao ----------
+hostname R-ISP
+no ip domain-lookup
+enable secret AgroTech2026
+service password-encryption
+banner motd #Roteador do provedor (simulacao) - R-ISP#
+line console 0
+ logging synchronous
+ exit
+!
+! ---------- Interfaces ----------
+interface GigabitEthernet0/0
+ description Link com a MATRIZ (R-MATRIZ Gi0/1)
+ ip address 203.0.113.2 255.255.255.252
+ no shutdown
+ exit
+interface GigabitEthernet0/1
+ description Link com a FILIAL (R-FILIAL Gi0/1)
+ ip address 198.51.100.1 255.255.255.252
+ no shutdown
+ exit
+interface Loopback0
+ description "Internet" simulada (8.8.8.8)
+ ip address 8.8.8.8 255.255.255.255
+ exit
+!
+! ---------- Rotas estaticas para as redes da matriz ----------
+! (Na vida real um provedor nao roteia IPs privados; aqui estas rotas
+!  representam o caminho que, em producao, seria feito pela VPN IPSec.)
+ip route 192.168.10.0 255.255.255.0 203.0.113.1
+ip route 192.168.20.0 255.255.255.0 203.0.113.1
+ip route 192.168.30.0 255.255.255.0 203.0.113.1
+ip route 192.168.40.0 255.255.255.0 203.0.113.1
+ip route 192.168.50.0 255.255.255.0 203.0.113.1
+ip route 192.168.60.0 255.255.255.0 203.0.113.1
+!
+! ---------- Rotas estaticas para as redes da filial ----------
+ip route 192.168.110.0 255.255.255.0 198.51.100.2
+ip route 192.168.120.0 255.255.255.0 198.51.100.2
+ip route 192.168.150.0 255.255.255.0 198.51.100.2
+!
+end
+write memory

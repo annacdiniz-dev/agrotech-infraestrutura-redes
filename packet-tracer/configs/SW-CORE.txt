@@ -1,0 +1,88 @@
+! =====================================================================
+!  SW-CORE  - Cisco 2960-24TT - Switch core da matriz
+!  (No projeto real: Cisco CBS350-48T. No Packet Tracer usamos o 2960.)
+!  Funcao: concentra os switches de distribuicao e leva todas as VLANs
+!          ate o roteador por um unico trunk 802.1Q.
+!  Ligacoes: Gi0/1  -> R-MATRIZ Gi0/0   (trunk)
+!            Gi0/2  -> SW-DIST1 Gi0/1   (trunk)
+!            Fa0/24 -> SW-DIST2 Gi0/1   (trunk)
+! =====================================================================
+enable
+configure terminal
+!
+! ---------- Identificacao ----------
+hostname SW-CORE
+no ip domain-lookup
+enable secret AgroTech2026
+service password-encryption
+banner motd #Acesso restrito - AgroTech - SW-CORE#
+line console 0
+ logging synchronous
+ exit
+!
+! ---------- VTP transparente: cada switch tem suas VLANs declaradas ----------
+vtp mode transparent
+!
+! ---------- VLANs da matriz ----------
+vlan 10
+ name ADM-FINANCEIRO
+vlan 20
+ name COMERCIAL-RH
+vlan 30
+ name TI-SERVIDORES
+vlan 40
+ name CAMERAS-IOT
+vlan 50
+ name WIFI-VISITANTES
+vlan 60
+ name VOIP
+vlan 99
+ name NATIVA
+vlan 999
+ name PORTAS-NAO-USADAS
+ exit
+!
+! ---------- Rapid PVST+: convergencia rapida do Spanning Tree ----------
+spanning-tree mode rapid-pvst
+!
+! ---------- Trunks ----------
+interface GigabitEthernet0/1
+ description TRUNK para R-MATRIZ Gi0/0 (router-on-a-stick)
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,60,99
+ no shutdown
+ exit
+interface GigabitEthernet0/2
+ description TRUNK para SW-DIST1 Gi0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,60,99
+ no shutdown
+ exit
+interface FastEthernet0/24
+ description TRUNK para SW-DIST2 Gi0/1
+ switchport mode trunk
+ switchport trunk native vlan 99
+ switchport trunk allowed vlan 10,20,30,40,50,60,99
+ no shutdown
+ exit
+!
+! ---------- Portas sem uso: desligadas e numa VLAN isolada ----------
+interface range FastEthernet0/1 - 23
+ description Porta reservada (expansao)
+ switchport mode access
+ switchport access vlan 999
+ shutdown
+ exit
+!
+! ---------- IP de gerencia (SNMP/SSH) na VLAN 30 ----------
+interface Vlan30
+ description Gerencia do switch
+ ip address 192.168.30.2 255.255.255.0
+ no shutdown
+ exit
+ip default-gateway 192.168.30.1
+!
+end
+write memory
