@@ -1,8 +1,8 @@
 ﻿AgroTech - evidencia gerada por docker/scripts/testar-tudo.ps1
-Data: 25/11/2026 21:31:09
+Data: 25/11/2026 21:51:48
 
 pc-teste:~# ip -4 addr show eth0
-2: eth0@if52: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0
+2: eth0@if63: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0
     inet 192.168.30.2/24 brd 192.168.30.255 scope global eth0
        valid_lft forever preferred_lft forever
 
@@ -11,65 +11,65 @@ pc-teste:~# ip -4 addr show eth0
 pc-teste:~# udhcpc -i eth0 -n -q -f
 udhcpc: started, v1.36.1
 udhcpc: broadcasting discover
-udhcpc: broadcasting select for 192.168.30.191, server 192.168.30.10
-udhcpc: lease of 192.168.30.191 obtained from 192.168.30.10, lease time 43200
-Configuracao aplicada: IP 192.168.30.191/24 | gateway 192.168.30.1 | DNS 192.168.30.11 | dominio agrotech.local | lease 43200s
+udhcpc: broadcasting select for 192.168.30.198, server 192.168.30.10
+udhcpc: lease of 192.168.30.198 obtained from 192.168.30.10, lease time 43200
+Configuracao aplicada: IP 192.168.30.198/24 | gateway 192.168.30.1 | DNS 192.168.30.11 | dominio agrotech.local | lease 43200s
 
 pc-teste:~# ip -4 addr show eth0
-2: eth0@if52: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0
-    inet 192.168.30.191/24 brd 192.168.30.255 scope global eth0
+2: eth0@if63: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default  link-netnsid 0
+    inet 192.168.30.198/24 brd 192.168.30.255 scope global eth0
        valid_lft forever preferred_lft forever
 pc-teste:~# ip route
 default via 192.168.30.1 dev eth0 
-192.168.30.0/24 dev eth0 proto kernel scope link src 192.168.30.191 
+192.168.30.0/24 dev eth0 proto kernel scope link src 192.168.30.198 
 pc-teste:~# cat /etc/resolv.conf
 # Gerado pelo udhcpc com os dados do DHCP da AgroTech
 search agrotech.local
 nameserver 192.168.30.11
 
 ----- Processo DORA no log do servidor (docker compose logs dhcp) -----
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPDISCOVER(eth0) ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPOFFER(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPREQUEST(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPACK(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPDISCOVER(eth0) 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPOFFER(eth0) 192.168.30.198 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPREQUEST(eth0) 192.168.30.198 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPACK(eth0) 192.168.30.198 06:a4:f0:a1:b9:07 
 
 ----- Log completo do dnsmasq (log-dhcp) neste teste -----
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 available DHCP range: 192.168.30.100 -- 192.168.30.200
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 vendor class: udhcp 1.36.1
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPDISCOVER(eth0) ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 tags: eth0
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPOFFER(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 requested options: 1:netmask, 3:router, 6:dns-server, 12:hostname, 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 requested options: 15:domain-name, 28:broadcast, 42:ntp-server
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 next server: 192.168.30.10
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 broadcast response
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  1 option: 53 message-type  2
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 54 server-identifier  192.168.30.10
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 51 lease-time  12h
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 58 T1  6h
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 59 T2  10h30m
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option:  1 netmask  255.255.255.0
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 28 broadcast  192.168.30.255
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size: 14 option: 15 domain-name  agrotech.local
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option:  6 dns-server  192.168.30.11
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option:  3 router  192.168.30.1
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 available DHCP range: 192.168.30.100 -- 192.168.30.200
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 vendor class: udhcp 1.36.1
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPREQUEST(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 tags: eth0
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 DHCPACK(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 requested options: 1:netmask, 3:router, 6:dns-server, 12:hostname, 
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 requested options: 15:domain-name, 28:broadcast, 42:ntp-server
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 next server: 192.168.30.10
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 broadcast response
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  1 option: 53 message-type  5
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 54 server-identifier  192.168.30.10
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 51 lease-time  12h
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 58 T1  6h
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 59 T2  10h30m
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option:  1 netmask  255.255.255.0
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option: 28 broadcast  192.168.30.255
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size: 14 option: 15 domain-name  agrotech.local
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option:  6 dns-server  192.168.30.11
-agrotech-dhcp  | dnsmasq-dhcp[1]: 870572919 sent size:  4 option:  3 router  192.168.30.1
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 available DHCP range: 192.168.30.100 -- 192.168.30.200
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 vendor class: udhcp 1.36.1
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPDISCOVER(eth0) 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 tags: eth0
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPOFFER(eth0) 192.168.30.198 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 requested options: 1:netmask, 3:router, 6:dns-server, 12:hostname, 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 requested options: 15:domain-name, 28:broadcast, 42:ntp-server
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 next server: 192.168.30.10
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 broadcast response
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  1 option: 53 message-type  2
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 54 server-identifier  192.168.30.10
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 51 lease-time  12h
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 58 T1  6h
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 59 T2  10h30m
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option:  1 netmask  255.255.255.0
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 28 broadcast  192.168.30.255
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size: 14 option: 15 domain-name  agrotech.local
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option:  6 dns-server  192.168.30.11
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option:  3 router  192.168.30.1
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 available DHCP range: 192.168.30.100 -- 192.168.30.200
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 vendor class: udhcp 1.36.1
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPREQUEST(eth0) 192.168.30.198 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 tags: eth0
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 DHCPACK(eth0) 192.168.30.198 06:a4:f0:a1:b9:07 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 requested options: 1:netmask, 3:router, 6:dns-server, 12:hostname, 
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 requested options: 15:domain-name, 28:broadcast, 42:ntp-server
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 next server: 192.168.30.10
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 broadcast response
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  1 option: 53 message-type  5
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 54 server-identifier  192.168.30.10
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 51 lease-time  12h
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 58 T1  6h
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 59 T2  10h30m
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option:  1 netmask  255.255.255.0
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option: 28 broadcast  192.168.30.255
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size: 14 option: 15 domain-name  agrotech.local
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option:  6 dns-server  192.168.30.11
+agrotech-dhcp  | dnsmasq-dhcp[1]: 1414669919 sent size:  4 option:  3 router  192.168.30.1
 

@@ -61,18 +61,18 @@ docker compose logs dhcp                                  # lado do servidor
 
 ```
 udhcpc: broadcasting discover
-udhcpc: broadcasting select for 192.168.30.191, server 192.168.30.10
-udhcpc: lease of 192.168.30.191 obtained from 192.168.30.10, lease time 43200
-Configuracao aplicada: IP 192.168.30.191/24 | gateway 192.168.30.1 | DNS 192.168.30.11 | dominio agrotech.local | lease 43200s
+udhcpc: broadcasting select for 192.168.30.198, server 192.168.30.10
+udhcpc: lease of 192.168.30.198 obtained from 192.168.30.10, lease time 43200
+Configuracao aplicada: IP 192.168.30.198/24 | gateway 192.168.30.1 | DNS 192.168.30.11 | dominio agrotech.local | lease 43200s
 
 default via 192.168.30.1 dev eth0
 search agrotech.local
 nameserver 192.168.30.11
 
-dnsmasq-dhcp[1]: DHCPDISCOVER(eth0) ba:d7:df:e1:a6:bd
-dnsmasq-dhcp[1]: DHCPOFFER(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd
-dnsmasq-dhcp[1]: DHCPREQUEST(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd
-dnsmasq-dhcp[1]: DHCPACK(eth0) 192.168.30.191 ba:d7:df:e1:a6:bd
+dnsmasq-dhcp[1]: DHCPDISCOVER(eth0) 06:a4:f0:a1:b9:07
+dnsmasq-dhcp[1]: DHCPOFFER(eth0) 192.168.30.198 06:a4:f0:a1:b9:07
+dnsmasq-dhcp[1]: DHCPREQUEST(eth0) 192.168.30.198 06:a4:f0:a1:b9:07
+dnsmasq-dhcp[1]: DHCPACK(eth0) 192.168.30.198 06:a4:f0:a1:b9:07
 ```
 
 O log completo também mostra as **opções** enviadas: `1 netmask 255.255.255.0`, `3 router 192.168.30.1`, `6 dns-server 192.168.30.11`, `15 domain-name agrotech.local`, `51 lease-time 12h`. O IP exato muda a cada execução (o dnsmasq sorteia dentro do pool).
@@ -124,7 +124,7 @@ PS> Invoke-WebRequest http://localhost:8080
 StatusCode: 200  Tamanho: 8250 bytes  X-Servidor: agrotech-web (192.168.30.12)
 ```
 
-No log do nginx, os acessos do cliente aparecem com o IP recebido via DHCP (ex.: 192.168.30.191) e o acesso feito pelo Windows aparece vindo de **192.168.30.1**, o gateway, porque o Docker faz NAT da porta 8080.
+No log do nginx, os acessos do cliente aparecem com o IP recebido via DHCP (ex.: 192.168.30.198) e o acesso feito pelo Windows aparece vindo de **192.168.30.1**, o gateway, porque o Docker faz NAT da porta 8080.
 
 ![Intranet aberta no navegador](../evidencias/prints/docker-02-intranet-navegador.png)
 
