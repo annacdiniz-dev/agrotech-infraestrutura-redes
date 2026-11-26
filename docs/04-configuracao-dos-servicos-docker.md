@@ -87,7 +87,7 @@ As configurações ficam **versionadas no Git** e são **montadas como volumes s
 
 ```powershell
 # 1. Baixar o repositório
-git clone https://github.com/<usuario>/agrotech-infraestrutura-redes.git
+git clone https://github.com/annacdiniz-dev/agrotech-infraestrutura-redes.git
 cd agrotech-infraestrutura-redes
 
 # 2. Rodar todos os testes (sobe os serviços, o cliente e grava evidencias/*.txt)

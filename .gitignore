@@ -14,6 +14,10 @@ desktop.ini
 .$*.drawio*
 *.pkt.bak
 
-# Arquivos temporarios gerados pelos testes
+*.pkz.bak
+*.drawio.dtmp
+
+# Arquivos temporarios gerados pelos testes / segredos locais
 docker/**/*.leases
 *.tmp
+.env

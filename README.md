@@ -119,7 +119,7 @@ flowchart TB
 Pré-requisitos: Windows com **Docker Desktop** aberto e **Git**.
 
 ```powershell
-git clone https://github.com/<usuario>/agrotech-infraestrutura-redes.git
+git clone https://github.com/annacdiniz-dev/agrotech-infraestrutura-redes.git
 cd agrotech-infraestrutura-redes
 powershell -ExecutionPolicy Bypass -File .\docker\scripts\testar-tudo.ps1
 start http://localhost:8080
