@@ -2,7 +2,7 @@
 !  R-MATRIZ  - Cisco 2911 - Roteador da matriz (Goiania)
 !  Funcao: router-on-a-stick (roteamento entre VLANs), relay DHCP,
 !          ACL da rede de visitantes e saida para o provedor (R-ISP).
-!  Ligacoes: Gi0/0 -> SW-CORE Gi0/1 (trunk 802.1Q)
+!  Ligacoes: Gi0/0 -> SW-CORE Fa0/1 (trunk 802.1Q)
 !            Gi0/1 -> R-ISP Gi0/0   (WAN 203.0.113.0/30)
 !  Como usar: CLI do roteador -> responda "no" ao "initial configuration
 !  dialog" -> cole este arquivo inteiro (ou bloco a bloco).
@@ -40,7 +40,7 @@ ip access-list extended VISITANTES-MATRIZ
 !
 ! ---------- Interface fisica do trunk (sem IP) ----------
 interface GigabitEthernet0/0
- description TRUNK 802.1Q para SW-CORE Gi0/1
+ description TRUNK 802.1Q para SW-CORE Fa0/1
  no ip address
  no shutdown
  exit

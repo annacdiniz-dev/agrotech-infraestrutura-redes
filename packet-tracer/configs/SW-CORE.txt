@@ -3,9 +3,9 @@
 !  (No projeto real: Cisco CBS350-48T. No Packet Tracer usamos o 2960.)
 !  Funcao: concentra os switches de distribuicao e leva todas as VLANs
 !          ate o roteador por um unico trunk 802.1Q.
-!  Ligacoes: Gi0/1  -> R-MATRIZ Gi0/0   (trunk)
-!            Gi0/2  -> SW-DIST1 Gi0/1   (trunk)
-!            Fa0/24 -> SW-DIST2 Gi0/1   (trunk)
+!  Ligacoes: Fa0/1 -> R-MATRIZ Gi0/0   (trunk)
+!            Fa0/2 -> SW-DIST1 Fa0/1   (trunk)
+!            Fa0/3 -> SW-DIST2 Fa0/1   (trunk)
 ! =====================================================================
 enable
 configure terminal
@@ -46,22 +46,22 @@ vlan 999
 spanning-tree mode rapid-pvst
 !
 ! ---------- Trunks ----------
-interface GigabitEthernet0/1
+interface FastEthernet0/1
  description TRUNK para R-MATRIZ Gi0/0 (router-on-a-stick)
  switchport mode trunk
  switchport trunk native vlan 99
  switchport trunk allowed vlan 10,20,30,40,50,60,99
  no shutdown
  exit
-interface GigabitEthernet0/2
- description TRUNK para SW-DIST1 Gi0/1
+interface FastEthernet0/2
+ description TRUNK para SW-DIST1 Fa0/1
  switchport mode trunk
  switchport trunk native vlan 99
  switchport trunk allowed vlan 10,20,30,40,50,60,99
  no shutdown
  exit
-interface FastEthernet0/24
- description TRUNK para SW-DIST2 Gi0/1
+interface FastEthernet0/3
+ description TRUNK para SW-DIST2 Fa0/1
  switchport mode trunk
  switchport trunk native vlan 99
  switchport trunk allowed vlan 10,20,30,40,50,60,99
@@ -69,7 +69,7 @@ interface FastEthernet0/24
  exit
 !
 ! ---------- Portas sem uso: desligadas e numa VLAN isolada ----------
-interface range FastEthernet0/1 - 23
+interface range FastEthernet0/4 - 24 , GigabitEthernet0/1 - 2
  description Porta reservada (expansao)
  switchport mode access
  switchport access vlan 999

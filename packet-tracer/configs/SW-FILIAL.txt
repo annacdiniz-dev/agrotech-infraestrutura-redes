@@ -1,10 +1,12 @@
 ! =====================================================================
 !  SW-FILIAL  - Cisco 2960-24TT - Switch da filial (Anapolis)
 !  (No projeto real: TP-Link TL-SG3428 no rack 4U.)
-!  Ligacoes: Gi0/1  -> R-FILIAL Gi0/0 (trunk)
-!            Fa0/1  -> PC-FILIAL-ADM      (VLAN 110)
-!            Fa0/9  -> PC-FILIAL-OFI      (VLAN 120)
-!            Fa0/21 -> AP-FILIAL          (VLAN 150)
+!  Ligacoes: Fa0/1 -> R-FILIAL Gi0/1 (trunk)
+!            Fa0/2 -> PC-FILIAL-ADM      (VLAN 110)
+!            Fa0/3 -> PC-FILIAL-OFI      (VLAN 120)
+!            Fa0/4 -> AP-FILIAL          (VLAN 150)
+!  Portas livres por VLAN (expansao): 110 = Fa0/5-10 | 120 = Fa0/11-16
+!                                     150 = Fa0/21-22
 ! =====================================================================
 enable
 configure terminal
@@ -37,8 +39,8 @@ vlan 999
 spanning-tree mode rapid-pvst
 !
 ! ---------- Uplink para o roteador (trunk) ----------
-interface GigabitEthernet0/1
- description TRUNK para R-FILIAL Gi0/0 (router-on-a-stick)
+interface FastEthernet0/1
+ description TRUNK para R-FILIAL Gi0/1 (router-on-a-stick)
  switchport mode trunk
  switchport trunk native vlan 99
  switchport trunk allowed vlan 99,110,120,150
@@ -46,7 +48,7 @@ interface GigabitEthernet0/1
  exit
 !
 ! ---------- Portas de acesso ----------
-interface range FastEthernet0/1 - 8
+interface range FastEthernet0/2 , FastEthernet0/5 - 10
  description VLAN 110 - Administrativo/Atendimento
  switchport mode access
  switchport access vlan 110
@@ -54,7 +56,7 @@ interface range FastEthernet0/1 - 8
  spanning-tree bpduguard enable
  no shutdown
  exit
-interface range FastEthernet0/9 - 16
+interface range FastEthernet0/3 , FastEthernet0/11 - 16
  description VLAN 120 - Oficina/Estoque
  switchport mode access
  switchport access vlan 120
@@ -62,14 +64,14 @@ interface range FastEthernet0/9 - 16
  spanning-tree bpduguard enable
  no shutdown
  exit
-interface range FastEthernet0/21 - 22
+interface range FastEthernet0/4 , FastEthernet0/21 - 22
  description VLAN 150 - Access Point de visitantes
  switchport mode access
  switchport access vlan 150
  spanning-tree portfast
  no shutdown
  exit
-interface range FastEthernet0/17 - 20 , FastEthernet0/23 - 24 , GigabitEthernet0/2
+interface range FastEthernet0/17 - 20 , FastEthernet0/23 - 24 , GigabitEthernet0/1 - 2
  description Porta reservada (expansao)
  switchport mode access
  switchport access vlan 999

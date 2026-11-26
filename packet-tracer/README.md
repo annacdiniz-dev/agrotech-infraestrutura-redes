@@ -38,7 +38,7 @@ Arquivos usados:
  IP-PHONE(V60)┼─ SW-DIST1 ─┐                                                     ├─ AP-FILIAL (V150) ))) Laptop-Visitante-Filial
  AP-VISIT(V50)┘            │                                                     │
    ))) Laptop-Visitante    ├─ SW-CORE ─ R-MATRIZ ──── R-ISP ──── R-FILIAL ─ SW-FILIAL
-                           │   (trunk)   Gi0/1   WAN   (8.8.8.8)  WAN  Gi0/1
+                           │   (trunk)   Gi0/1   WAN   (8.8.8.8)  WAN  Gi0/0
  SRV-DHCP .10 ─┐           │           203.0.113.0/30      198.51.100.0/30
  SRV-DNS  .11 ─┤           │
  SRV-WEB  .12 ─┼─ SW-DIST2 ┘
@@ -102,25 +102,25 @@ Não use o cabo "automático" (raio amarelo), porque ele escolhe a primeira port
 
 | # | Dispositivo A | Porta A | Dispositivo B | Porta B | Cabo |
 |---|---|---|---|---|---|
-| 1 | R-MATRIZ | GigabitEthernet0/0 | SW-CORE | GigabitEthernet0/1 | Straight-Through |
+| 1 | R-MATRIZ | GigabitEthernet0/0 | SW-CORE | FastEthernet0/1 | Straight-Through |
 | 2 | R-MATRIZ | GigabitEthernet0/1 | R-ISP | GigabitEthernet0/0 | Cross-Over |
-| 3 | R-ISP | GigabitEthernet0/1 | R-FILIAL | GigabitEthernet0/1 | Cross-Over |
-| 4 | SW-CORE | GigabitEthernet0/2 | SW-DIST1 | GigabitEthernet0/1 | Cross-Over |
-| 5 | SW-CORE | FastEthernet0/24 | SW-DIST2 | GigabitEthernet0/1 | Cross-Over |
-| 6 | SW-DIST1 | FastEthernet0/1 | PC-ADM | FastEthernet0 | Straight-Through |
-| 7 | SW-DIST1 | FastEthernet0/9 | PC-COM | FastEthernet0 | Straight-Through |
-| 8 | SW-DIST1 | FastEthernet0/17 | IP-PHONE | Switch | Straight-Through |
-| 9 | SW-DIST1 | FastEthernet0/21 | AP-VISITANTES | Port 0 | Straight-Through |
-| 10 | SW-DIST2 | FastEthernet0/1 | SRV-DHCP | FastEthernet0 | Straight-Through |
-| 11 | SW-DIST2 | FastEthernet0/2 | SRV-DNS | FastEthernet0 | Straight-Through |
-| 12 | SW-DIST2 | FastEthernet0/3 | SRV-WEB | FastEthernet0 | Straight-Through |
-| 13 | SW-DIST2 | FastEthernet0/4 | SRV-FTP | FastEthernet0 | Straight-Through |
-| 14 | SW-DIST2 | FastEthernet0/5 | PC-TI | FastEthernet0 | Straight-Through |
-| 15 | SW-DIST2 | FastEthernet0/13 | PC-CAM | FastEthernet0 | Straight-Through |
-| 16 | R-FILIAL | GigabitEthernet0/0 | SW-FILIAL | GigabitEthernet0/1 | Straight-Through |
-| 17 | SW-FILIAL | FastEthernet0/1 | PC-FILIAL-ADM | FastEthernet0 | Straight-Through |
-| 18 | SW-FILIAL | FastEthernet0/9 | PC-FILIAL-OFI | FastEthernet0 | Straight-Through |
-| 19 | SW-FILIAL | FastEthernet0/21 | AP-FILIAL | Port 0 | Straight-Through |
+| 3 | R-ISP | GigabitEthernet0/1 | R-FILIAL | GigabitEthernet0/0 | Cross-Over |
+| 4 | SW-CORE | FastEthernet0/2 | SW-DIST1 | FastEthernet0/1 | Cross-Over |
+| 5 | SW-CORE | FastEthernet0/3 | SW-DIST2 | FastEthernet0/1 | Cross-Over |
+| 6 | SW-DIST1 | FastEthernet0/2 | PC-ADM | FastEthernet0 | Straight-Through |
+| 7 | SW-DIST1 | FastEthernet0/3 | PC-COM | FastEthernet0 | Straight-Through |
+| 8 | SW-DIST1 | FastEthernet0/17 | IP-PHONE (opcional) | Switch | Straight-Through |
+| 9 | SW-DIST1 | FastEthernet0/4 | AP-VISITANTES | Port 0 | Straight-Through |
+| 10 | SW-DIST2 | FastEthernet0/2 | SRV-DHCP | FastEthernet0 | Straight-Through |
+| 11 | SW-DIST2 | FastEthernet0/3 | SRV-DNS | FastEthernet0 | Straight-Through |
+| 12 | SW-DIST2 | FastEthernet0/4 | SRV-WEB | FastEthernet0 | Straight-Through |
+| 13 | SW-DIST2 | FastEthernet0/5 | SRV-FTP | FastEthernet0 | Straight-Through |
+| 14 | SW-DIST2 | FastEthernet0/6 | PC-TI | FastEthernet0 | Straight-Through |
+| 15 | SW-DIST2 | FastEthernet0/7 | PC-CAM | FastEthernet0 | Straight-Through |
+| 16 | R-FILIAL | GigabitEthernet0/1 | SW-FILIAL | FastEthernet0/1 | Straight-Through |
+| 17 | SW-FILIAL | FastEthernet0/2 | PC-FILIAL-ADM | FastEthernet0 | Straight-Through |
+| 18 | SW-FILIAL | FastEthernet0/3 | PC-FILIAL-OFI | FastEthernet0 | Straight-Through |
+| 19 | SW-FILIAL | FastEthernet0/4 | AP-FILIAL | Port 0 | Straight-Through |
 
 **Telefone IP (opcional):** o 7960 precisa de energia. Clique nele → aba **Physical** → arraste o **IP_PHONE_POWER_ADAPTER** (lista à esquerda) até a tomada do telefone (canto inferior direito da imagem).
 

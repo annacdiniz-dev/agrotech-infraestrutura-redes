@@ -2,8 +2,8 @@
 !  R-FILIAL  - Cisco 2911 - Roteador da filial (Anapolis)
 !  Funcao: router-on-a-stick, relay DHCP para o servidor da MATRIZ
 !          (192.168.30.10, atraves da WAN) e ACL da rede de visitantes.
-!  Ligacoes: Gi0/0 -> SW-FILIAL Gi0/1 (trunk 802.1Q)
-!            Gi0/1 -> R-ISP Gi0/1     (WAN 198.51.100.0/30)
+!  Ligacoes: Gi0/1 -> SW-FILIAL Fa0/1 (trunk 802.1Q)
+!            Gi0/0 -> R-ISP Gi0/1     (WAN 198.51.100.0/30)
 ! =====================================================================
 enable
 configure terminal
@@ -35,39 +35,39 @@ ip access-list extended VISITANTES-FILIAL
  exit
 !
 ! ---------- Interface fisica do trunk ----------
-interface GigabitEthernet0/0
- description TRUNK 802.1Q para SW-FILIAL Gi0/1
+interface GigabitEthernet0/1
+ description TRUNK 802.1Q para SW-FILIAL Fa0/1
  no ip address
  no shutdown
  exit
 !
 ! ---------- Subinterfaces ----------
-interface GigabitEthernet0/0.110
+interface GigabitEthernet0/1.110
  description VLAN 110 - Administrativo/Atendimento
  encapsulation dot1Q 110
  ip address 192.168.110.1 255.255.255.0
  ip helper-address 192.168.30.10
  exit
-interface GigabitEthernet0/0.120
+interface GigabitEthernet0/1.120
  description VLAN 120 - Oficina/Estoque
  encapsulation dot1Q 120
  ip address 192.168.120.1 255.255.255.0
  ip helper-address 192.168.30.10
  exit
-interface GigabitEthernet0/0.150
+interface GigabitEthernet0/1.150
  description VLAN 150 - Wi-Fi Visitantes (somente Internet)
  encapsulation dot1Q 150
  ip address 192.168.150.1 255.255.255.0
  ip helper-address 192.168.30.10
  ip access-group VISITANTES-FILIAL in
  exit
-interface GigabitEthernet0/0.99
+interface GigabitEthernet0/1.99
  description VLAN 99 - Nativa do trunk (sem uso para dados)
  encapsulation dot1Q 99 native
  exit
 !
 ! ---------- WAN ----------
-interface GigabitEthernet0/1
+interface GigabitEthernet0/0
  description WAN - Provedor (R-ISP Gi0/1) - 198.51.100.0/30
  ip address 198.51.100.2 255.255.255.252
  no shutdown

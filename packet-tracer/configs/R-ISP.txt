@@ -1,7 +1,7 @@
 ! =====================================================================
 !  R-ISP  - Cisco 2911 - Simula o provedor (Vivo Empresas) e a Internet
 !  Ligacoes: Gi0/0 -> R-MATRIZ Gi0/1 (203.0.113.0/30)
-!            Gi0/1 -> R-FILIAL Gi0/1 (198.51.100.0/30)
+!            Gi0/1 -> R-FILIAL Gi0/0 (198.51.100.0/30)
 !  A Loopback0 (8.8.8.8) representa um servidor "na Internet", usado
 !  para provar que os visitantes conseguem navegar.
 ! =====================================================================
@@ -25,7 +25,7 @@ interface GigabitEthernet0/0
  no shutdown
  exit
 interface GigabitEthernet0/1
- description Link com a FILIAL (R-FILIAL Gi0/1)
+ description Link com a FILIAL (R-FILIAL Gi0/0)
  ip address 198.51.100.1 255.255.255.252
  no shutdown
  exit

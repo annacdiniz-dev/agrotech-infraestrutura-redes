@@ -1,13 +1,14 @@
 ! =====================================================================
 !  SW-DIST2  - Cisco 2960-24TT - Distribuicao 2 (TI, servidores e cameras)
-!  (No projeto real: TP-Link TL-SG3428.)
-!  Ligacoes: Gi0/1  -> SW-CORE Fa0/24 (trunk)
-!            Fa0/1  -> SRV-DHCP (192.168.30.10)   VLAN 30
-!            Fa0/2  -> SRV-DNS  (192.168.30.11)   VLAN 30
-!            Fa0/3  -> SRV-WEB  (192.168.30.12)   VLAN 30
-!            Fa0/4  -> SRV-FTP  (192.168.30.13)   VLAN 30
-!            Fa0/5  -> PC-TI                      VLAN 30
-!            Fa0/13 -> PC-CAM (simula camera IP)  VLAN 40
+!  (No projeto real: TP-Link TL-SG3428MP.)
+!  Ligacoes: Fa0/1 -> SW-CORE Fa0/3 (trunk)
+!            Fa0/2 -> SRV-DHCP (192.168.30.10)   VLAN 30
+!            Fa0/3 -> SRV-DNS  (192.168.30.11)   VLAN 30
+!            Fa0/4 -> SRV-WEB  (192.168.30.12)   VLAN 30
+!            Fa0/5 -> SRV-FTP  (192.168.30.13)   VLAN 30
+!            Fa0/6 -> PC-TI                      VLAN 30
+!            Fa0/7 -> PC-CAM (simula camera IP)  VLAN 40
+!  Portas livres por VLAN (expansao): 30 = Fa0/8-12 | 40 = Fa0/13-20
 ! =====================================================================
 enable
 configure terminal
@@ -46,8 +47,8 @@ vlan 999
 spanning-tree mode rapid-pvst
 !
 ! ---------- Uplink (trunk) ----------
-interface GigabitEthernet0/1
- description TRUNK para SW-CORE Fa0/24
+interface FastEthernet0/1
+ description TRUNK para SW-CORE Fa0/3
  switchport mode trunk
  switchport trunk native vlan 99
  switchport trunk allowed vlan 10,20,30,40,50,60,99
@@ -55,7 +56,7 @@ interface GigabitEthernet0/1
  exit
 !
 ! ---------- Portas de acesso ----------
-interface range FastEthernet0/1 - 12
+interface range FastEthernet0/2 - 6 , FastEthernet0/8 - 12
  description VLAN 30 - TI/Servidores
  switchport mode access
  switchport access vlan 30
@@ -63,7 +64,7 @@ interface range FastEthernet0/1 - 12
  spanning-tree bpduguard enable
  no shutdown
  exit
-interface range FastEthernet0/13 - 20
+interface range FastEthernet0/7 , FastEthernet0/13 - 20
  description VLAN 40 - Cameras IP/IoT
  switchport mode access
  switchport access vlan 40
@@ -71,7 +72,7 @@ interface range FastEthernet0/13 - 20
  spanning-tree bpduguard enable
  no shutdown
  exit
-interface range FastEthernet0/21 - 24 , GigabitEthernet0/2
+interface range FastEthernet0/21 - 24 , GigabitEthernet0/1 - 2
  description Porta reservada (expansao)
  switchport mode access
  switchport access vlan 999
