@@ -1,20 +1,20 @@
 ﻿AgroTech - evidencia gerada por docker/scripts/testar-tudo.ps1
-Data: 25/11/2026 21:51:43
+Data: 27/11/2026 08:03:02
 
 PS> docker compose --profile test ps
-NAME               IMAGE                  COMMAND                  SERVICE   CREATED         STATUS         PORTS
-agrotech-cliente   agrotech/cliente:1.0   "sleep infinity"         cliente   3 seconds ago   Up 3 seconds   
-agrotech-dhcp      agrotech/dhcp:1.0      "dnsmasq --keep-in-f…"   dhcp      4 seconds ago   Up 3 seconds   67/udp
-agrotech-dns       agrotech/dns:1.0       "dnsmasq --keep-in-f…"   dns       4 seconds ago   Up 3 seconds   53/tcp, 53/udp
-agrotech-ftp       agrotech/ftp:1.0       "/entrypoint.sh"         ftp       4 seconds ago   Up 4 seconds   21/tcp, 21100-21110/tcp
-agrotech-web       nginx:1.27-alpine      "/docker-entrypoint.…"   web       4 seconds ago   Up 4 seconds   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+NAME               IMAGE                  COMMAND                  SERVICE   CREATED          STATUS          PORTS
+agrotech-cliente   agrotech/cliente:1.0   "sleep infinity"         cliente   7 seconds ago    Up 3 seconds    
+agrotech-dhcp      agrotech/dhcp:1.0      "dnsmasq --keep-in-f…"   dhcp      36 minutes ago   Up 36 minutes   67/udp
+agrotech-dns       agrotech/dns:1.0       "dnsmasq --keep-in-f…"   dns       36 minutes ago   Up 36 minutes   53/tcp, 53/udp
+agrotech-ftp       agrotech/ftp:1.0       "/entrypoint.sh"         ftp       36 minutes ago   Up 36 minutes   21/tcp, 21100-21110/tcp
+agrotech-web       nginx:1.27-alpine      "/docker-entrypoint.…"   web       36 minutes ago   Up 36 minutes   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
 
 PS> docker network inspect agrotech-lan (resumo)
 Rede: agrotech-lan | Driver: bridge | Sub-rede: 192.168.30.0/24 | Gateway: 192.168.30.1 | ip_range: 192.168.30.0/28
-agrotech-web  192.168.30.12/24
-agrotech-cliente  192.168.30.2/24
-agrotech-ftp  192.168.30.13/24
-agrotech-dhcp  192.168.30.10/24
 agrotech-dns  192.168.30.11/24
+agrotech-cliente  192.168.30.2/24
+agrotech-dhcp  192.168.30.10/24
+agrotech-web  192.168.30.12/24
+agrotech-ftp  192.168.30.13/24
 
 

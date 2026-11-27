@@ -1,15 +1,15 @@
 ﻿AgroTech - evidencia gerada por docker/scripts/testar-tudo.ps1
-Data: 25/11/2026 21:51:50
+Data: 27/11/2026 08:03:16
 
 pc-teste:~# curl -sI http://192.168.30.12
 HTTP/1.1 200 OK
 Server: nginx/1.27.5
-Date: Thu, 26 Nov 2026 00:51:50 GMT
+Date: Fri, 27 Nov 2026 11:03:14 GMT
 Content-Type: text/html
-Content-Length: 8250
-Last-Modified: Thu, 26 Nov 2026 00:24:55 GMT
+Content-Length: 20673
+Last-Modified: Fri, 27 Nov 2026 11:01:25 GMT
 Connection: keep-alive
-ETag: "6b077c57-203a"
+ETag: "6b096305-50c1"
 X-Servidor: agrotech-web (192.168.30.12)
 Accept-Ranges: bytes
 
@@ -18,19 +18,19 @@ OK - intranet AgroTech no ar
 pc-teste:~# curl -s http://intranet.agrotech.local | grep -o '<title>.*</title>'
 <title>Intranet AgroTech</title>
 pc-teste:~# curl -s http://erp.agrotech.local | grep -c AgroTech
-2
+4
 
 ----- Acesso pelo Windows (porta publicada 8080) -----
 PS> Invoke-WebRequest http://localhost:8080
-StatusCode: 200  Tamanho: 8250 bytes  X-Servidor: agrotech-web (192.168.30.12)
+StatusCode: 200  Tamanho: 20673 bytes  X-Servidor: agrotech-web (192.168.30.12)
 
 ----- Log de acesso do nginx -----
-agrotech-web  | 2026/11/26 00:51:38 [notice] 1#1: start worker process 34
-agrotech-web  | 2026/11/26 00:51:38 [notice] 1#1: start worker process 35
-agrotech-web  | 2026/11/26 00:51:38 [notice] 1#1: start worker process 36
-agrotech-web  | 192.168.30.198 - - [26/Nov/2026:00:51:50 +0000] "HEAD / HTTP/1.1" 200 0 "-" "curl/8.14.1"
-agrotech-web  | 192.168.30.198 - - [26/Nov/2026:00:51:50 +0000] "GET /saude HTTP/1.1" 200 29 "-" "curl/8.14.1"
-agrotech-web  | 192.168.30.198 - - [26/Nov/2026:00:51:50 +0000] "GET / HTTP/1.1" 200 8250 "-" "curl/8.14.1"
-agrotech-web  | 192.168.30.198 - - [26/Nov/2026:00:51:50 +0000] "GET / HTTP/1.1" 200 8250 "-" "curl/8.14.1"
-agrotech-web  | 192.168.30.1 - - [26/Nov/2026:00:51:50 +0000] "GET / HTTP/1.1" 200 8250 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; pt-BR) WindowsPowerShell/5.1.26100.9818"
+agrotech-web  | 192.168.30.1 - - [27/Nov/2026:11:01:40 +0000] "GET /img/logo-agrotech.png HTTP/1.1" 200 89689 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+agrotech-web  | 192.168.30.1 - - [27/Nov/2026:11:01:46 +0000] "GET / HTTP/1.1" 200 20673 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+agrotech-web  | 192.168.30.1 - - [27/Nov/2026:11:01:46 +0000] "GET /img/logo-agrotech.png HTTP/1.1" 200 89689 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+agrotech-web  | 192.168.30.141 - - [27/Nov/2026:11:03:14 +0000] "HEAD / HTTP/1.1" 200 0 "-" "curl/8.14.1"
+agrotech-web  | 192.168.30.141 - - [27/Nov/2026:11:03:14 +0000] "GET /saude HTTP/1.1" 200 29 "-" "curl/8.14.1"
+agrotech-web  | 192.168.30.141 - - [27/Nov/2026:11:03:15 +0000] "GET / HTTP/1.1" 200 20673 "-" "curl/8.14.1"
+agrotech-web  | 192.168.30.141 - - [27/Nov/2026:11:03:15 +0000] "GET / HTTP/1.1" 200 20673 "-" "curl/8.14.1"
+agrotech-web  | 192.168.30.1 - - [27/Nov/2026:11:03:16 +0000] "GET / HTTP/1.1" 200 20673 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; pt-BR) WindowsPowerShell/5.1.26100.9818"
 

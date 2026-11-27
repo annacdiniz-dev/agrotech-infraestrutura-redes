@@ -4,132 +4,272 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Intranet AgroTech</title>
+  <link rel="icon" href="img/logo-agrotech.png">
   <style>
+    /* Paleta tirada da logo: verde-escuro da engrenagem e verde-folha da planta */
     :root {
-      --verde-escuro: #1f4d2b;
-      --verde: #2e7d32;
-      --verde-claro: #e6f2e3;
-      --terra: #8b5a2b;
-      --terra-claro: #f4ebe0;
-      --areia: #faf7f2;
-      --texto: #2b2b2b;
-      --texto-suave: #5f6358;
-      --borda: #e2dccf;
+      --verde-escuro: #044024;
+      --verde-noite: #022a17;
+      --verde-folha: #47841d;
+      --verde-folha-claro: #e9f3e1;
+      --menta: #b9e08f;
+      --fundo: #f4f7f2;
+      --cartao: #ffffff;
+      --texto: #14231a;
+      --texto-suave: #5b6b60;
+      --borda: #dfe7dc;
+      --raio: 18px;
+      --sombra: 0 1px 2px rgba(4,64,36,.06), 0 8px 24px rgba(4,64,36,.07);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI Variable", "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
       color: var(--texto);
-      background: var(--areia);
-      line-height: 1.5;
+      background: var(--fundo);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
     }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+    /* ---------- Cabeçalho ---------- */
     header {
-      background: linear-gradient(120deg, var(--verde-escuro), var(--verde) 70%, var(--terra));
-      color: #fff;
-      padding: 28px 16px 64px;
+      position: relative; overflow: hidden; color: #fff;
+      background:
+        radial-gradient(900px 420px at 85% -10%, rgba(71,132,29,.55), transparent 60%),
+        radial-gradient(600px 300px at 0% 120%, rgba(71,132,29,.35), transparent 60%),
+        linear-gradient(160deg, var(--verde-escuro), var(--verde-noite));
+      padding: 22px 0 96px;
     }
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+    header::after {                       /* linhas de plantio, como na base da logo */
+      content: ""; position: absolute; inset: auto 0 0 0; height: 140px; pointer-events: none;
+      background: repeating-linear-gradient(100deg, rgba(255,255,255,.035) 0 22px, transparent 22px 44px);
+      -webkit-mask-image: linear-gradient(to top, #000, transparent);
+              mask-image: linear-gradient(to top, #000, transparent);
+    }
     .topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .logo { display: flex; align-items: center; gap: 12px; }
-    .logo-marca {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: #fff; position: relative; overflow: hidden;
+    .marca { display: flex; align-items: center; gap: 14px; }
+    .marca img {
+      width: 84px; height: 84px; border-radius: 20px;
+      background: #fff; padding: 3px;
+      box-shadow: 0 0 0 3px rgba(185,224,143,.35), 0 6px 18px rgba(0,0,0,.25);
     }
-    .logo-marca::before {               /* sol */
-      content: ""; position: absolute; width: 18px; height: 18px; border-radius: 50%;
-      background: #e0a526; top: 7px; right: 7px;
+    .marca-nome { font-size: 1.55rem; font-weight: 700; letter-spacing: -.01em; line-height: 1.1; }
+    .marca-nome span { color: var(--menta); }
+    .marca-sub { font-size: .85rem; opacity: .75; }
+    .endereco {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .85rem; padding: 7px 14px; border-radius: 999px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(6px);
     }
-    .logo-marca::after {                /* campo */
-      content: ""; position: absolute; left: -6px; right: -6px; bottom: -14px; height: 34px;
-      background: repeating-linear-gradient(100deg, var(--verde) 0 6px, #43a047 6px 12px);
-      border-radius: 50% 50% 0 0;
+    .endereco::before {
+      content: ""; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--menta); box-shadow: 0 0 0 4px rgba(185,224,143,.2);
     }
-    .logo-texto { font-size: 1.6rem; font-weight: 700; letter-spacing: .5px; }
-    .logo-texto span { color: #f3d9a4; }
-    .logo-sub { font-size: .85rem; opacity: .85; }
-    .usuario { font-size: .9rem; background: rgba(255,255,255,.15); padding: 6px 12px; border-radius: 999px; }
-    .boasvindas { margin-top: 28px; }
-    .boasvindas h1 { margin: 0 0 6px; font-size: 1.9rem; }
-    .boasvindas p { margin: 0; opacity: .9; max-width: 640px; }
+    .boasvindas { margin-top: 44px; position: relative; z-index: 1; }
+    .rotulo {
+      display: inline-block; font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--menta); margin-bottom: 10px;
+    }
+    .boasvindas h1 { margin: 0 0 10px; font-size: clamp(1.9rem, 4vw, 2.6rem); letter-spacing: -.02em; line-height: 1.15; }
+    .boasvindas p { margin: 0; opacity: .82; max-width: 620px; font-size: 1.02rem; }
 
-    main { margin-top: -40px; padding-bottom: 40px; }
+    /* ---------- Conteúdo ---------- */
+    main { margin-top: -56px; padding-bottom: 48px; position: relative; z-index: 2; }
     .cartao {
-      background: #fff; border: 1px solid var(--borda); border-radius: 14px;
-      padding: 20px; box-shadow: 0 2px 10px rgba(31,77,43,.06);
+      background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio);
+      padding: 24px; box-shadow: var(--sombra);
     }
-    .grade { display: grid; gap: 16px; }
-    .grade-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    h2 { font-size: 1.15rem; margin: 0 0 14px; color: var(--verde-escuro); }
-    h2 small { font-weight: 400; color: var(--texto-suave); font-size: .85rem; }
-    section { margin-top: 20px; }
+    .grade { display: grid; gap: 18px; }
+    .grade-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    section { margin-top: 20px; scroll-margin-top: 84px; }  /* espaço para a barra fixa */
+    h2 { font-size: 1.15rem; margin: 0 0 4px; color: var(--verde-escuro); letter-spacing: -.01em; }
+    .sub { color: var(--texto-suave); font-size: .9rem; margin: 0 0 18px; }
 
+    /* Atalhos */
     .atalho {
-      display: block; text-decoration: none; color: inherit;
-      border-left: 4px solid var(--verde); transition: transform .15s, box-shadow .15s;
+      display: flex; gap: 16px; align-items: flex-start;
+      text-decoration: none; color: inherit;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
-    .atalho:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(31,77,43,.12); }
-    .atalho.terra { border-left-color: var(--terra); }
-    .atalho strong { display: block; font-size: 1rem; }
+    .atalho:hover, .atalho:focus-visible {
+      transform: translateY(-3px); border-color: var(--verde-folha);
+      box-shadow: 0 12px 32px rgba(4,64,36,.14); outline: none;
+    }
+    .icone {
+      flex: none; width: 46px; height: 46px; border-radius: 14px;
+      display: grid; place-items: center;
+      background: var(--verde-folha-claro); color: var(--verde-escuro);
+    }
+    .icone svg { width: 24px; height: 24px; }
+    .atalho strong { display: block; font-size: 1.02rem; margin-bottom: 2px; }
     .atalho span { color: var(--texto-suave); font-size: .9rem; }
 
+    /* Tabela de status */
+    .tabela-rolagem { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid var(--borda); white-space: nowrap; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #f8fbf6; }
+    th { color: var(--texto-suave); font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+    code {
+      font-family: "Cascadia Code", Consolas, monospace; font-size: .85rem;
+      background: var(--fundo); padding: 2px 7px; border-radius: 6px; color: var(--verde-escuro);
+    }
+    .status {
+      display: inline-flex; align-items: center; gap: 7px; font-weight: 600; font-size: .85rem;
+      color: var(--verde-escuro); background: var(--verde-folha-claro); padding: 3px 10px; border-radius: 999px;
+    }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--verde-folha); }
+
+    /* Bloco selecionado (pelo cartão ou pelo menu): ganha borda verde */
+    section.cartao { transition: border-color .25s, box-shadow .25s; }
+    section.cartao.selecionado {
+      border-color: var(--verde-folha);
+      box-shadow: 0 0 0 2px var(--verde-folha), var(--sombra);
+    }
+
+    /* ---------- Barra fixa com menu (aparece ao rolar a página) ---------- */
+    .barra {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(4,64,36,.94); backdrop-filter: blur(8px); color: #fff;
+      box-shadow: 0 4px 18px rgba(0,0,0,.18);
+      transform: translateY(-100%); transition: transform .25s ease;
+    }
+    .barra.visivel { transform: translateY(0); }
+    .barra .container { display: flex; align-items: center; gap: 14px; height: 60px; position: relative; }
+    .barra img { width: 38px; height: 38px; border-radius: 10px; background: #fff; padding: 2px; }
+    .barra-nome { font-weight: 700; font-size: 1.05rem; }
+    .barra-nome span { color: var(--menta); }
+    .menu-botao {
+      width: 42px; height: 42px; border-radius: 12px; border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.08); color: #fff; cursor: pointer;
+      display: grid; place-items: center; padding: 0;
+    }
+    .menu-botao:hover, .menu-botao[aria-expanded="true"] { background: rgba(255,255,255,.18); }
+    .menu-botao span, .menu-botao span::before, .menu-botao span::after {
+      display: block; width: 18px; height: 2px; border-radius: 2px; background: currentColor; position: relative;
+      transition: transform .2s, opacity .2s;
+    }
+    .menu-botao span::before, .menu-botao span::after { content: ""; position: absolute; left: 0; }
+    .menu-botao span::before { top: -6px; }
+    .menu-botao span::after { top: 6px; }
+    .menu-botao[aria-expanded="true"] span { background: transparent; }
+    .menu-botao[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+    .menu-botao[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+    .menu {
+      position: absolute; top: 64px; left: 20px; min-width: 260px;
+      background: #fff; color: var(--texto); border-radius: 14px; padding: 8px;
+      box-shadow: 0 16px 40px rgba(4,64,36,.22); border: 1px solid var(--borda);
+      list-style: none; margin: 0;
+    }
+    .menu[hidden] { display: none; }
+    .menu a {
+      display: block; padding: 10px 14px; border-radius: 10px;
+      color: var(--texto); text-decoration: none; font-size: .95rem;
+    }
+    .menu a:hover, .menu a:focus-visible { background: var(--verde-folha-claro); color: var(--verde-escuro); outline: none; }
+    .menu a.ativo { background: var(--verde-folha-claro); color: var(--verde-escuro); font-weight: 600; }
+    .lista-modulos { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin: 0; padding: 0; list-style: none; }
+    .lista-modulos li { background: var(--fundo); border-radius: 12px; padding: 14px 16px; }
+    .lista-modulos b { display: block; color: var(--verde-escuro); }
+    .lista-modulos small { color: var(--texto-suave); }
+    .dados { display: grid; grid-template-columns: max-content 1fr; gap: 8px 18px; margin: 0; font-size: .93rem; }
+    .dados dt { color: var(--texto-suave); }
+    .dados dd { margin: 0; }
+    .nota {
+      margin: 16px 0 0; font-size: .85rem; color: var(--texto-suave);
+      background: var(--fundo); border-left: 3px solid var(--verde-folha); padding: 10px 14px; border-radius: 0 10px 10px 0;
+    }
+    .duas-colunas { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+    /* Setores */
     .setores { display: flex; flex-wrap: wrap; gap: 8px; }
     .setor {
-      padding: 6px 12px; border-radius: 999px; font-size: .88rem;
-      background: var(--verde-claro); color: var(--verde-escuro);
+      padding: 7px 14px; border-radius: 999px; font-size: .87rem; font-weight: 500;
+      background: var(--verde-folha-claro); color: var(--verde-escuro);
     }
-    .setor.filial { background: var(--terra-claro); color: var(--terra); }
+    .setor.filial { background: var(--verde-escuro); color: #fff; }
+    .legenda { display: flex; gap: 18px; margin-top: 14px; font-size: .8rem; color: var(--texto-suave); }
+    .legenda i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
 
-    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
-    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--borda); }
-    th { color: var(--texto-suave); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .4px; }
-    td code { background: var(--areia); padding: 2px 6px; border-radius: 6px; font-size: .88rem; }
-    .status { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--verde); }
-    .status::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #43a047; box-shadow: 0 0 0 3px #c8e6c9; }
-    .tabela-rolagem { overflow-x: auto; }
-
+    .avisos { margin: 0; padding-left: 18px; }
     .avisos li { margin-bottom: 8px; }
-    footer { text-align: center; color: var(--texto-suave); font-size: .85rem; padding: 24px 16px 32px; border-top: 1px solid var(--borda); }
+    .avisos li::marker { color: var(--verde-folha); }
+
+    footer {
+      text-align: center; color: var(--texto-suave); font-size: .82rem;
+      padding: 28px 20px 36px; border-top: 1px solid var(--borda);
+    }
   </style>
 </head>
 <body>
-  <header>
+  <!-- Barra fixa: aparece quando a pessoa rola para baixo; o botão de três barras abre a lista de módulos -->
+  <nav class="barra" id="barra" aria-label="Navegação da intranet">
+    <div class="container">
+      <button class="menu-botao" id="menu-botao" type="button" aria-label="Abrir lista de módulos" aria-expanded="false" aria-controls="menu"><span></span></button>
+      <img src="img/logo-agrotech.png" alt="">
+      <div class="barra-nome">Agro<span>Tech</span></div>
+      <ul class="menu" id="menu" hidden>
+        <li><a href="#topo">Início</a></li>
+        <li><a href="#servicos">Status dos serviços de rede</a></li>
+        <li><a href="#erp">Sistema ERP</a></li>
+        <li><a href="#arquivos">Arquivos (FTP)</a></li>
+        <li><a href="#suporte">Suporte de TI</a></li>
+        <li><a href="#setores">Setores</a></li>
+        <li><a href="#comunicados">Comunicados da TI</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header id="topo">
     <div class="container">
       <div class="topo">
-        <div class="logo">
-          <div class="logo-marca" aria-hidden="true"></div>
+        <div class="marca">
+          <img src="img/logo-agrotech.png" alt="Logo AgroTech">
           <div>
-            <div class="logo-texto">Agro<span>Tech</span></div>
-            <div class="logo-sub">Soluções Agrícolas Ltda.</div>
+            <div class="marca-nome">Agro<span>Tech</span></div>
+            <div class="marca-sub">Soluções Agrícolas Ltda.</div>
           </div>
         </div>
-        <div class="usuario">intranet.agrotech.local</div>
+        <div class="endereco">intranet.agrotech.local</div>
       </div>
       <div class="boasvindas">
-        <h1>Intranet corporativa</h1>
-        <p>Portal interno da matriz (Goiânia) e da filial (Anápolis): sistemas, comunicados e status dos serviços de rede.</p>
+        <div class="rotulo">Intranet corporativa</div>
+        <h1>Bem-vindo à rede AgroTech</h1>
+        <p>Portal interno da matriz (Goiânia) e da filial (Anápolis): sistemas, arquivos, suporte e status dos serviços de rede.</p>
       </div>
     </div>
   </header>
 
   <main class="container">
+    <!-- Atalhos: cada cartão leva ao bloco correspondente nesta página -->
     <div class="grade grade-3">
-      <a class="cartao atalho" href="http://erp.agrotech.local">
-        <strong>Sistema ERP</strong>
-        <span>Vendas, estoque de peças e ordens de serviço</span>
+      <a class="cartao atalho" href="#erp">
+        <div class="icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+        </div>
+        <div><strong>Sistema ERP</strong><span>Vendas, estoque de peças e ordens de serviço</span></div>
       </a>
-      <a class="cartao atalho terra" href="ftp://ftp.agrotech.local">
-        <strong>Arquivos (FTP)</strong>
-        <span>Manuais técnicos, catálogos e laudos da oficina</span>
+      <a class="cartao atalho" href="#arquivos">
+        <div class="icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        </div>
+        <div><strong>Arquivos (FTP)</strong><span>Manuais técnicos, catálogos e laudos da oficina</span></div>
       </a>
-      <a class="cartao atalho" href="#servicos">
-        <strong>Suporte de TI</strong>
-        <span>Ramal 3000 · VLAN 30 · ti@agrotech.local</span>
+      <a class="cartao atalho" href="#suporte">
+        <div class="icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+        </div>
+        <div><strong>Suporte de TI</strong><span>Ramal 3000 · VLAN 30 · ti@agrotech.local</span></div>
       </a>
     </div>
 
     <section class="cartao" id="servicos">
-      <h2>Status dos serviços de rede <small>· servidores da VLAN 30 (192.168.30.0/24)</small></h2>
+      <h2>Status dos serviços de rede</h2>
+      <p class="sub">Servidores da VLAN 30 · 192.168.30.0/24</p>
       <div class="tabela-rolagem">
         <table>
           <thead>
@@ -146,8 +286,47 @@
       </div>
     </section>
 
-    <section class="cartao">
+    <section class="cartao" id="erp">
+      <h2>Sistema ERP</h2>
+      <p class="sub">Endereço interno: <code>erp.agrotech.local</code></p>
+      <ul class="lista-modulos">
+        <li><b>Vendas</b><small>Pedidos de máquinas, implementos e peças</small></li>
+        <li><b>Estoque de peças</b><small>Saldo da matriz e da filial</small></li>
+        <li><b>Ordens de serviço</b><small>Abertura e acompanhamento na oficina</small></li>
+        <li><b>Financeiro</b><small>Contas a pagar e a receber</small></li>
+      </ul>
+      <p class="nota">Neste projeto o ERP é ilustrativo. No DNS, <code>erp.agrotech.local</code> é um registro <b>CNAME</b> (apelido) de <code>intranet.agrotech.local</code>, para demonstrar esse tipo de registro.</p>
+    </section>
+
+    <div class="duas-colunas">
+      <section class="cartao" id="arquivos">
+        <h2>Arquivos (FTP)</h2>
+        <p class="sub">Manuais técnicos, catálogos de peças e laudos da oficina</p>
+        <dl class="dados">
+          <dt>Servidor</dt><dd><code>ftp.agrotech.local</code> (192.168.30.13)</dd>
+          <dt>Porta</dt><dd>21/TCP · modo passivo 21100–21110</dd>
+          <dt>Acesso</dt><dd>Usuário e senha fornecidos pela TI</dd>
+          <dt>Pasta</dt><dd><code>/arquivos</code></dd>
+        </dl>
+        <p class="nota">Os navegadores atuais não abrem mais endereços <code>ftp://</code>. Use um cliente FTP, como o FileZilla, ou o comando <code>curl ftp://ftp.agrotech.local/arquivos/ -u usuario</code>.</p>
+      </section>
+
+      <section class="cartao" id="suporte">
+        <h2>Suporte de TI</h2>
+        <p class="sub">Equipe de TI da matriz, para as duas unidades</p>
+        <dl class="dados">
+          <dt>Ramal</dt><dd>3000</dd>
+          <dt>E-mail</dt><dd><code>ti@agrotech.local</code></dd>
+          <dt>Sala</dt><dd>TI · matriz (Goiânia) · VLAN 30</dd>
+          <dt>Filial</dt><dd>Chamados pelo e-mail, atendidos via VPN</dd>
+        </dl>
+        <p class="nota">Antes de abrir um chamado, confira na tabela de status acima se o serviço está ativo.</p>
+      </section>
+    </div>
+
+    <section class="cartao" id="setores">
       <h2>Setores</h2>
+      <p class="sub">Matriz e filial atendidas por esta rede</p>
       <div class="setores">
         <span class="setor">Recepção</span>
         <span class="setor">Administração</span>
@@ -163,9 +342,13 @@
         <span class="setor filial">Filial · Oficina</span>
         <span class="setor filial">Filial · Estoque</span>
       </div>
+      <div class="legenda">
+        <span><i style="background:var(--verde-folha-claro);border:1px solid var(--verde-folha)"></i>Matriz · Goiânia</span>
+        <span><i style="background:var(--verde-escuro)"></i>Filial · Anápolis</span>
+      </div>
     </section>
 
-    <section class="cartao">
+    <section class="cartao" id="comunicados">
       <h2>Comunicados da TI</h2>
       <ul class="avisos">
         <li>A rede Wi-Fi de visitantes (VLAN 50) dá acesso somente à Internet. Colaboradores devem usar a rede corporativa.</li>
@@ -179,5 +362,51 @@
     AgroTech Soluções Agrícolas Ltda. · Servido por nginx no container <code>agrotech-web</code> (192.168.30.12)<br>
     Projeto acadêmico · Redes de Computadores II · PUC Goiás · 2026
   </footer>
+
+  <script>
+    (function () {
+      var barra  = document.getElementById('barra');
+      var botao  = document.getElementById('menu-botao');
+      var menu   = document.getElementById('menu');
+      var header = document.getElementById('topo');
+
+      // Mostra a barra fixa depois que o cabeçalho sai da tela
+      function atualizarBarra() {
+        var passou = window.scrollY > header.offsetHeight - 70;
+        barra.classList.toggle('visivel', passou);
+        if (!passou) fecharMenu();
+      }
+      window.addEventListener('scroll', atualizarBarra, { passive: true });
+      atualizarBarra();
+
+      // Abre/fecha a lista de módulos
+      function fecharMenu() { menu.hidden = true; botao.setAttribute('aria-expanded', 'false'); }
+      botao.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var abrir = menu.hidden;
+        menu.hidden = !abrir;
+        botao.setAttribute('aria-expanded', String(abrir));
+      });
+      document.addEventListener('click', function (e) { if (!menu.contains(e.target)) fecharMenu(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') fecharMenu(); });
+
+      // Só o bloco escolhido (pelo cartão ou pelo menu) fica com borda verde
+      function selecionar(id) {
+        document.querySelectorAll('section.cartao').forEach(function (s) {
+          s.classList.toggle('selecionado', s.id === id);
+        });
+        menu.querySelectorAll('a').forEach(function (a) {
+          a.classList.toggle('ativo', a.getAttribute('href') === '#' + id);
+        });
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          selecionar(a.getAttribute('href').slice(1));
+          fecharMenu();
+        });
+      });
+      if (location.hash) selecionar(location.hash.slice(1));
+    })();
+  </script>
 </body>
 </html>

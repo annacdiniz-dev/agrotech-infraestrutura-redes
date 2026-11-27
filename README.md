@@ -186,10 +186,11 @@ Discussão completa em [docs/06-dificuldades-e-decisoes-tecnicas.md](docs/06-dif
 - [x] Configurações IOS do Packet Tracer e guia passo a passo
 - [x] Diagramas físico e lógico (`.drawio` e Mermaid)
 - [x] Roteiro da apresentação
-- [ ] Topologia montada no Packet Tracer e salva em `packet-tracer/agrotech.pkt`
-- [ ] Prints do Packet Tracer em `evidencias/prints/pt-*.png`
-- [ ] Prints do Docker em `evidencias/prints/docker-*.png`
+- [x] Topologia montada no Packet Tracer e salva em `packet-tracer/agrotech.pkt`
+- [x] Prints do Packet Tracer em `evidencias/prints/pt-*.png`
+- [x] Prints do Docker em `evidencias/prints/docker-*.png`
 - [x] PNGs dos diagramas em `diagramas/`
+- [x] Relatório final em Word e PDF (`entrega/`)
 - [ ] Ana Júlia adicionada como colaboradora
 - [ ] Repositório **público** (conferido numa aba anônima)
 - [ ] Link público do repositório informado no AVA/Teams (entrega conforme a data de apresentação; apresentações de 02 a 04/12/2026)

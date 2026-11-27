@@ -25,7 +25,7 @@ Esta seção lista cada teste realizado, o comando usado, o resultado esperado e
 | D2 | Docker | DNS: registros A, CNAME, PTR, NXDOMAIN e encaminhamento externo | **Passou** | [`teste-dns.txt`](../evidencias/teste-dns.txt) |
 | D3 | Docker | Web: intranet pelo IP, pelo nome e pelo Windows (porta 8080) | **Passou** | [`teste-web.txt`](../evidencias/teste-web.txt) |
 | D4 | Docker | FTP: listar, baixar, enviar e recusar senha errada | **Passou** | [`teste-ftp.txt`](../evidencias/teste-ftp.txt) |
-| P1–P18 | Packet Tracer | DHCP com relay, pings intra/inter-VLAN, matriz ↔ filial, DNS, HTTP, FTP, ACL de visitantes | A executar pela equipe | `evidencias/prints/pt-*.png` |
+| P1–P18 | Packet Tracer | DHCP com relay, pings intra/inter-VLAN, matriz ↔ filial, DNS, HTTP, FTP, ACL de visitantes | **Passou** nos testes registrados em print: P1, P4, P6, P8, P15 e P16 | `evidencias/prints/pt-*.png` |
 
 Resumo da última execução do script: [`resumo-testes.txt`](../evidencias/resumo-testes.txt).
 
@@ -132,7 +132,7 @@ OK - intranet AgroTech no ar
 <title>Intranet AgroTech</title>
 
 PS> Invoke-WebRequest http://localhost:8080
-StatusCode: 200  Tamanho: 8250 bytes  X-Servidor: agrotech-web (192.168.30.12)
+StatusCode: 200  Tamanho: 20673 bytes  X-Servidor: agrotech-web (192.168.30.12)
 ```
 
 No log do nginx, os acessos do cliente aparecem com o IP recebido via DHCP (ex.: 192.168.30.198) e o acesso feito pelo Windows aparece vindo de **192.168.30.1**, o gateway, porque o Docker faz NAT da porta 8080.
@@ -162,8 +162,6 @@ powershell -ExecutionPolicy Bypass -File .\docker\scripts\testar-tudo.ps1
   [PASSOU] FTP (listar, baixar, enviar, negar senha errada)
 ```
 
-![Script de testes no terminal](../evidencias/prints/docker-03-testar-tudo.png)
-
 ---
 
 ## 5.3 Testes no Packet Tracer
@@ -174,49 +172,31 @@ Roteiro detalhado: [`packet-tracer/README.md` › Executar os testes](../packet-
 |---|---|---|---|---|
 | P1 | PC-ADM | `ipconfig /all` | IP 192.168.10.1xx, gateway .1, DNS 192.168.30.11 | `pt-02` |
 | P2 | PC-ADM | `ipconfig /release` + `ipconfig /renew` | Novo IP recebido | `pt-02` |
-| P3 | PC-TI | `ping 192.168.30.10` | Resposta (intra-VLAN) | `pt-03` |
+| P3 | PC-TI | `ping 192.168.30.10` | Resposta (intra-VLAN) | — |
 | P4 | PC-ADM | `ping` no PC-COM (192.168.20.1xx) | Resposta (inter-VLAN) | `pt-04` |
 | P5 | PC-ADM | `ping 192.168.30.12` | Resposta | `pt-04` |
 | P6 | PC-ADM | `ping` no PC-FILIAL-ADM (192.168.110.1xx) | Resposta (matriz → filial) | `pt-05` |
 | P7 | PC-FILIAL-ADM | `ping` no PC-ADM | Resposta (filial → matriz) | `pt-05` |
 | P8 | PC-ADM | `tracert` até a filial | 192.168.10.1 → 203.0.113.2 → 198.51.100.2 → destino | `pt-05` |
-| P9 | PC-ADM | `nslookup intranet.agrotech.local` | 192.168.30.12 | `pt-06` |
-| P10 | PC-ADM | Navegador: `http://intranet.agrotech.local` | Página da intranet | `pt-07` |
-| P11 | PC-FILIAL-ADM | Navegador: `http://erp.agrotech.local` | Página da intranet (CNAME, via WAN) | `pt-07` |
-| P12 | PC-TI | `ftp 192.168.30.13` | Login e `dir` | `pt-08` |
+| P9 | PC-ADM | `nslookup intranet.agrotech.local` | 192.168.30.12 | — |
+| P10 | PC-ADM | Navegador: `http://intranet.agrotech.local` | Página da intranet | — |
+| P11 | PC-FILIAL-ADM | Navegador: `http://erp.agrotech.local` | Página da intranet (CNAME, via WAN) | — |
+| P12 | PC-TI | `ftp 192.168.30.13` | Login e `dir` | — |
 | P13 | PC-ADM | `ping 8.8.8.8` | Resposta (Internet) | — |
 | P14 | Laptop-Visitante | `ipconfig` | IP 192.168.50.1xx | `pt-09` |
 | P15 | Laptop-Visitante | `ping 8.8.8.8` | Resposta | `pt-09` |
 | P16 | Laptop-Visitante | `ping 192.168.10.1xx` / `ping 192.168.30.12` | **Bloqueado** (*Destination host unreachable*) | `pt-09` |
 | P17 | Laptop-Visitante-Filial | `ping 8.8.8.8` / `ping 192.168.110.1xx` | Internet OK / interno bloqueado | — |
-| P18 | R-MATRIZ | `show access-lists` | Contadores de *matches* na linha `deny` | `pt-10` |
+| P18 | R-MATRIZ | `show access-lists` | Contadores de *matches* na linha `deny` | — |
 
-Prints da simulação:
+Foram registrados em print apenas os testes que **não** têm equivalente no Docker. DNS, Web e FTP já estão comprovados na seção 5.2. As configurações (VLANs, rotas, ACL, pools DHCP e registros DNS) estão em texto em [`packet-tracer/configs/`](../packet-tracer/configs/).
 
 ![Topologia no Packet Tracer](../evidencias/prints/pt-01-topologia.png)
 
-![ipconfig no PC-ADM](../evidencias/prints/pt-02-ipconfig-pc-adm.png)
-
-![Ping intra-VLAN](../evidencias/prints/pt-03-ping-intra-vlan.png)
+![ipconfig no PC-ADM (DHCP com relay)](../evidencias/prints/pt-02-ipconfig-pc-adm.png)
 
 ![Ping inter-VLAN](../evidencias/prints/pt-04-ping-inter-vlan.png)
 
 ![Ping e tracert matriz-filial](../evidencias/prints/pt-05-ping-matriz-filial.png)
 
-![nslookup](../evidencias/prints/pt-06-nslookup.png)
-
-![Navegador com a intranet](../evidencias/prints/pt-07-navegador-intranet.png)
-
-![Sessão FTP](../evidencias/prints/pt-08-ftp.png)
-
 ![Visitante bloqueado](../evidencias/prints/pt-09-visitante-bloqueado.png)
-
-![show access-lists](../evidencias/prints/pt-10-show-access-lists.png)
-
-![show vlan brief](../evidencias/prints/pt-11-show-vlan-brief.png)
-
-![show ip route](../evidencias/prints/pt-12-show-ip-route.png)
-
-![Pools DHCP no SRV-DHCP](../evidencias/prints/pt-13-dhcp-pools.png)
-
-![Registros DNS no SRV-DNS](../evidencias/prints/pt-14-dns-registros.png)

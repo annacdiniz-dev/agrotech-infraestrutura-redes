@@ -65,7 +65,9 @@ docker/
 │   └── agrotech.hosts        # registros A da zona agrotech.local
 ├── web/
 │   ├── nginx.conf            # site da intranet
-│   └── html/index.html       # página da intranet
+│   └── html/
+│       ├── index.html        # página da intranet
+│       └── img/logo-agrotech.png  # logo da empresa
 ├── ftp/
 │   ├── Dockerfile            # Alpine + vsftpd
 │   ├── entrypoint.sh         # cria o usuário e inicia o vsftpd

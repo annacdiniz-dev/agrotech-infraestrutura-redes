@@ -50,6 +50,10 @@ Write-Host 'Docker OK.'
 
 # ---------------------------------------------------------------------
 Titulo 'Passo 1 - Subindo os servicos (DHCP, DNS, Web, FTP)'
+# Sem o "atestado de procedencia" do BuildKit, a imagem reconstruida do cache fica identica
+# a anterior; com ele, cada build gera uma imagem nova e os containers em execucao ficariam
+# apontando para a versao antiga (aparece so o ID, sem nome, no Docker Desktop).
+$env:BUILDX_NO_DEFAULT_ATTESTATIONS = '1'
 docker compose --profile test build
 docker compose up -d
 # Recria o cliente para o teste de DHCP comecar "do zero" (com o IP inicial do Docker)

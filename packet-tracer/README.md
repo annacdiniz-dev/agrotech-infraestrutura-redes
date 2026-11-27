@@ -280,19 +280,12 @@ Depois que tudo funcionar, veja [`configs/GRE-OPCIONAL.txt`](configs/GRE-OPCIONA
 | Arquivo | O que mostrar |
 |---|---|
 | `pt-01-topologia.png` | A topologia inteira, com todos os links verdes |
-| `pt-02-ipconfig-pc-adm.png` | T1: `ipconfig /all` no PC-ADM |
-| `pt-03-ping-intra-vlan.png` | T3: PC-TI pingando 192.168.30.10 |
+| `pt-02-ipconfig-pc-adm.png` | T1: `ipconfig /all` no PC-ADM (IP recebido do DHCP de outra VLAN, via relay) |
 | `pt-04-ping-inter-vlan.png` | T4: PC-ADM pingando o PC-COM |
 | `pt-05-ping-matriz-filial.png` | T6 + T8: ping e tracert do PC-ADM até a filial |
-| `pt-06-nslookup.png` | T9: nslookup da intranet |
-| `pt-07-navegador-intranet.png` | T10: navegador do PC-ADM com a intranet aberta |
-| `pt-08-ftp.png` | T12: sessão FTP no PC-TI |
 | `pt-09-visitante-bloqueado.png` | T15 + T16: Laptop-Visitante (8.8.8.8 ok, rede interna bloqueada) |
-| `pt-10-show-access-lists.png` | T18: `show access-lists` no R-MATRIZ |
-| `pt-11-show-vlan-brief.png` | `show vlan brief` no SW-DIST1 |
-| `pt-12-show-ip-route.png` | `show ip route` no R-MATRIZ |
-| `pt-13-dhcp-pools.png` | Aba Services → DHCP do SRV-DHCP com os pools |
-| `pt-14-dns-registros.png` | Aba Services → DNS do SRV-DNS com os registros |
+
+Os demais testes (ping na mesma VLAN, DNS, navegador, FTP, `show access-lists` etc.) continuam no roteiro da seção 9 e devem ser executados, mas não entram como print no relatório: DNS, Web e FTP já estão provados no Docker, e as configurações estão em texto em [`configs/`](configs/).
 
 ### Salvar o arquivo .pkt
 
